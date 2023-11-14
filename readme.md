@@ -25,3 +25,6 @@
 - src/router/
      - create express router and export
 
+- middlewares/uploader.middleware.js/
+     - multer uploader middleware setup, later we'll uploader.single|array('key') in route to store file
+     - Note: we receive file in req.file|files
