@@ -9,8 +9,19 @@
     - dotenv -> for environment variables
     - gridfs-stream, multer, multer-gridfs-storage -> for fileuploading locally
     - helmet -> for request safety
-    - morgan -> for logging
+    - morgan -> for logging info about requests
     - jsonwebtoken -> for authenication
     - mongoose -> for mongodb access
 
     
+- index.js/
+     - create Node.js server using http, mount app and listen to the server
+
+- src/config/
+     - express.config.js
+          - create express app, cors, require dbconfig, parse req data formats, mount app router 404 handle, error handeling middleware and export app
+     - db.config.js
+          - connect mongodb using mongoose
+- src/router/
+     - create express router and export
+
