@@ -35,3 +35,13 @@
 * src/app/auth/
      - we'll manage seperate controller, model, router and services file for auth component|functionality
 
+- API- '/register' of auth 
+     - created '/register' route at auth.router.js, used uploader before controller midd. we may upload picture
+     - created UserModel at user.model.js we'll store some of info of user there while registering
+     - now register midd. of auth.controller.js
+          - first of req is send to auth.request.js for transformation, i.e adding additionl fields, hashPsw and more
+          - then payload is sent to auth.services.js to store them in DB
+     - Now our register API- route is completed
+
+
+
