@@ -12,6 +12,16 @@ class AuthServices{
             throw(error);            
         }
     }
+
+
+    getUserByFilter = async (filter)=>{
+        try {
+            const userDetails = await UserModel.findOne(filter);
+            return userDetails;
+        } catch (error) {
+            throw(error);            
+        }
+    }
 }
 
 const authSvc = new AuthServices();

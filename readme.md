@@ -43,5 +43,10 @@
           - then payload is sent to auth.services.js to store them in DB
      - Now our register API- route is completed
 
-
+- API- '/login' 
+     - create '/login' route
+     - create login controller middleware,
+          - create findUserByFilter auth.service and return userDetails
+          - if exist use bcrypt to compare passwords from req.body and userDetails.password
+          - if match generate jwt token and send 200 response else send respective error
 

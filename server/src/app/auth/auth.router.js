@@ -10,5 +10,6 @@ const dirSetup = (req,res,next)=>{
     next();
 }
 authRouter.post('/register',dirSetup,uploader.single('picture'),authCtrl.register);
+authRouter.post('/login',authCtrl.login);
 
 module.exports = authRouter;
