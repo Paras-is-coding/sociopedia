@@ -28,3 +28,10 @@
 - middlewares/uploader.middleware.js/
      - multer uploader middleware setup, later we'll uploader.single|array('key') in route to store file
      - Note: we receive file in req.file|files
+
+
+# auth component begin
+
+* src/app/auth/
+     - we'll manage seperate controller, model, router and services file for auth component|functionality
+

@@ -22,7 +22,7 @@ app.use(express.json({limit:"30mb"}));
 app.use(express.urlencoded({extended:true,limit:"30mb"}))
 
 // mount app router
-app.use("/api/v1/",router);
+app.use("/api/v1",router);
 
 // 404 error handler
 app.use((req,res,next)=>{
