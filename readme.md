@@ -50,3 +50,11 @@
           - if exist use bcrypt to compare passwords from req.body and userDetails.password
           - if match generate jwt token and send 200 response else send respective error
 
+
+# authorization 
+
+* checkLogin middleware
+     - After logging in for every route that needs login we'll send jwt token on request and checkLogin middleware will verify the token
+     - middlewares/auth.middleware.js/
+          - checkLogin middleware -> getToken_jwt verify token_check if userexist_append authUser to req
+     - now we'll use this middleware before heading to controller midd. of auth router aftr login

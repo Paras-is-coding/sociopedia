@@ -13,7 +13,7 @@ class AuthController{
 
         const savedUser = await authSvc.registerUser(payload);
         
-        const{password,...rest} = savedUser;
+        const{password,...rest} = savedUser._doc
         res.json({
             result:rest,
             messsage:"User registered successfully!",
@@ -42,11 +42,13 @@ class AuthController{
                         process.env.JWT_SECRET_KEY,
                         {expiresIn:"1d"}
                     );
-
+                    
+                    const {password,...rest} = userDetails._doc;
                     res.json({
                         result:{
                             token:token,
-                            type:"Bearer"
+                            type:"Bearer",
+                            user:rest
                         },
                         message:"User loggedIn successfully!",
                         meta:null
