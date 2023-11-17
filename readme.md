@@ -60,6 +60,9 @@
      - now we'll use this middleware before heading to controller midd. of auth router aftr login
 
 
-# user component
+# user component API-routes
 - creating user CRUD routes, controller and all
 - we have route for getUser, getUserFriends, addRemoveFriend in userRouter
+
+# posts component API-routes
+- created createPost, getAllPosts and getUserPosts API-routes
