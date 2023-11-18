@@ -68,3 +68,8 @@
 - created createPost, getAllPosts and getUserPosts API-routes
 - created likePost API route
      - take postId and userId, find post and see on it's like if userId is there, IF removes it IfNOT adds it and returns updatedPost
+
+
+
+# Begin frontend 
+- vite app setup and cleanup
