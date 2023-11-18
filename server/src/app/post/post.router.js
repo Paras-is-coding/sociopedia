@@ -12,7 +12,7 @@ postRouter.get("/",checkLogin,postCtrl.getFeedPosts)
 postRouter.get("/:userId",checkLogin,postCtrl.getUserPosts)
 
 // update
-postRouter.patch("/:id/like",checkLogin,postCtrl.likePost)
+postRouter.patch("/like/:id",checkLogin,postCtrl.likePost)
 
 
 module.exports = postRouter;
