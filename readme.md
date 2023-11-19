@@ -73,3 +73,21 @@
 
 # Begin frontend 
 - vite app setup and cleanup
+
+# dependencies install
+- `npm i react-redux @reduxjs/toolkit redux-persist react-dropzone dotenv formik yup react-router-dom @mui/material @emotion/react @emotion/styled @mui/icons-material`
+
+     - react-redux @reduxjs/toolkit ->State management lib, toolkit for easy use of redux
+     - redux-persist ->Store states to localstorage when needed
+     - react-dropzone ->Handle fileupload and filehandeling in frontend
+     - dotenv ->Environment variables
+     - formik ->Form handeling
+     - yup ->Validation
+     - react-router-dom ->Handeling different routes
+     - @mui/material @emotion/react @emotion/styled @mui/icons-material ->Material UI
+
+
+# giving structure for code 
+- scenes/  ->Folders for defining sections where we setup layout for our components
+- components/ ->Make our reusable components here
+- state/ ->Redux setup for state management  
