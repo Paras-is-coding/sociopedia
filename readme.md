@@ -91,3 +91,6 @@
 - scenes/  ->Folders for defining sections where we setup layout for our components
 - components/ ->Make our reusable components here
 - state/ ->Redux setup for state management  
+
+# added redux 
+- create store, authSlice, add reducer to store and wrap app component with provider store
