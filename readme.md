@@ -94,3 +94,10 @@
 
 # added redux 
 - create store, authSlice, add reducer to store and wrap app component with provider store
+
+
+# Redux Persist
+- Added redux-persixt
+- redux-persist is a library designed for persisting and rehydrating state in Redux applications.
+ It seamlessly integrates with Redux to store the state in various storage engines, 
+ enabling the preservation of application state across page reloads, app restarts, or device reboots.
