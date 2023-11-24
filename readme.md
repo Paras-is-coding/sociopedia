@@ -101,3 +101,8 @@
 - redux-persist is a library designed for persisting and rehydrating state in Redux applications.
  It seamlessly integrates with Redux to store the state in various storage engines, 
  enabling the preservation of application state across page reloads, app restarts, or device reboots.
+
+
+
+# theme file
+- added theme file, color setup for project
