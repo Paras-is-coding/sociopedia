@@ -1,4 +1,5 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const { generateRandomString } = require('../../config/helper');
 
 class AuthRequest{
     body;
@@ -12,15 +13,7 @@ class AuthRequest{
     }
 
     transformRequestData = ()=>{
-        let {password,...rest} = this.body;
-        const payload = rest;
-
-        const hashedPassword = bcrypt.hashSync(password,10);
-        payload.password = hashedPassword;
-
-        payload.viewedProfile = Math.floor(Math.random()*1000);
-        payload.impressions =Math.floor(Math.random()*1000);
-
+        const payload = this.body;
 
         if(this.file){
             payload.picturePath = this.file.filename;
@@ -28,6 +21,15 @@ class AuthRequest{
         if(this.files){
             payload.picturePath = this.files.map((file)=>file.filename);
         }
+
+
+        payload.viewedProfile = Math.floor(Math.random()*1000);
+        payload.impressions =Math.floor(Math.random()*1000);
+
+
+     
+        payload.status = 'inactive'
+        payload.token = generateRandomString();
 
         return payload;
     }

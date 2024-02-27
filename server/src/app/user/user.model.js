@@ -27,17 +27,28 @@ const userModelSchema = mongoose.Schema({
     picturePath:{
         type:String,
         default:""
-    },
-    friends:{
-        type:Array,
-        default:[]
-    },
+    }, 
+    bio: { type: String },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     location:String,
     occupation:String,
     viewedProfile:String,
     impressions:Number,
+    status:{
+        type:String,
+        enum:["active","inactive"],
+        default:'inactive'
+    },
+    phone:String,
+    token:String,
+    resetToken:String,
+    resetExpiry:Date
 },{
-    timestamps:true
+    timestamps:true,
+    autoCreate:true,
+    autoIndex:true
 })
 
 

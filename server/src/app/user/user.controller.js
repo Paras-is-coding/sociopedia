@@ -24,67 +24,97 @@ class UserController{
     }
 
 
-    getUserFriends = async (req,res,next)=>{
+    getUserFollowers = async (req,res,next)=>{
         try {
             const {id} = req.params;
             const userDetails = await userSvc.getUserByFilter({_id:id});
 
-            if(userDetails.friends.length > 0){
-              const friends = await Promise.all(
-                userDetails.friends.map((id)=>{
+            if(userDetails.followers.length > 0){
+              const followers = await Promise.all(
+                userDetails.followers.map((id)=>{
                         return userSvc.getUserByFilter({_id:id});
                 })
               );
 
-                const formattedFriends = friends.map(({_id,firstname,lastname,occupation,location,picturePath})=>{
+                const formattedFollowers = followers.map(({_id,firstname,lastname,occupation,location,picturePath})=>{
                     return {_id,firstname,lastname,occupation,location,picturePath};
                 })
 
                 res.json({
                     result:{
-                        friends:formattedFriends
+                        followers:formattedFollowers
                     },
-                    message:"Successfully fetched friends!",
+                    message:"Successfully fetched followers!",
                     meta:null
                 })
             }else{
-                next({code:200,message:"User have no friends!"});
+                next({code:200,message:"User have no followers!"});
+            }
+        } catch (error) {
+            next(error)
+        }  
+    }
+    getUserFollowing = async (req,res,next)=>{
+        try {
+            const {id} = req.params;
+            const userDetails = await userSvc.getUserByFilter({_id:id});
+
+            if(userDetails.following.length > 0){
+              const following = await Promise.all(
+                userDetails.following.map((id)=>{
+                        return userSvc.getUserByFilter({_id:id});
+                })
+              );
+
+                const formattedFollowing = following.map(({_id,firstname,lastname,occupation,location,picturePath})=>{
+                    return {_id,firstname,lastname,occupation,location,picturePath};
+                })
+
+                res.json({
+                    result:{
+                        following:formattedFollowing
+                    },
+                    message:"Successfully fetched following!",
+                    meta:null
+                })
+            }else{
+                next({code:200,message:"User is not following anyone!"});
             }
         } catch (error) {
             next(error)
         }  
     }
 
-    addRemoveFriend = async (req,res,next)=>{
+    addRemoveFollowing = async (req,res,next)=>{
         try {
-            const {id,friendId} = req.params;
+            const {id,followingId} = req.params;
             const userDetails = await userSvc.getUserByFilter({_id:id});
-            const friend = await userSvc.getUserByFilter({_id:friendId});
+            const following = await userSvc.getUserByFilter({_id:followingId});
 
 
-            let updatedFriends, updatedFriendFriends;
+            let updatedFollowing, updatedFollowingsFollowers;
 
-            if(userDetails.friends.includes(friendId)){
-                updatedFriends = userDetails.friends.filter((friend)=> friend !== friendId);
-                updatedFriendFriends = friend.friends.filter((friend)=> friend !== id);
+            if(userDetails.following.includes(followingId)){
+                updatedFollowing = userDetails.following.filter((following)=> following !== followingId);
+                updatedFollowingsFollowers = following.followers.filter((follower)=> follower !== id);
             }else{
-                updatedFriends = [...userDetails.friends,friendId];
-                updatedFriendFriends = [...friend.friends,id];
+                updatedFollowing = [...userDetails.following,followingId];
+                updatedFollowingsFollowers = [...following.followers,id];
             }
 
-            const isUpdatedUser = await userSvc.updateUser({_id:id},{friends:updatedFriends});
-            const isUpdatedFriend = await userSvc.updateUser({_id:friendId},{friends:updatedFriendFriends});
+            const isUpdatedUser = await userSvc.updateUser({_id:id},{following:updatedFollowing});
+            const isUpdatedFollowings = await userSvc.updateUser({_id:followingId},{following:updatedFollowingsFollowers});
             const updatedUser = await userSvc.getUserByFilter({_id:id});
-            const updatedFriend = await userSvc.getUserByFilter({_id:friendId});
+            const updatedFollowings = await userSvc.getUserByFilter({_id:followingId});
             delete updatedUser._doc.password;
-            delete updatedFriend._doc.password;
+            delete updatedFollowings._doc.password;
 
             res.json({
                 result:{
                     isUpdatedUser,
-                    isUpdatedFriend,
+                    isUpdatedFollowings,
                     user:updatedUser,
-                    friend:updatedFriend
+                    friend:updatedFollowings
                 },
                 message:"User updated successfully!",
                 meta:null

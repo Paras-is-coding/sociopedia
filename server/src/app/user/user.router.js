@@ -5,9 +5,10 @@ const userRouter = require('express').Router();
 
 // read
 userRouter.get('/:id',checkLogin,userCtrl.getUser);
-userRouter.get('/:id/friends',checkLogin,userCtrl.getUserFriends);
+userRouter.get('/:id/followers',checkLogin,userCtrl.getUserFollowers);
+userRouter.get('/:id/following',checkLogin,userCtrl.getUserFollowing);
 
 // update
-userRouter.patch('/:id/:friendId',checkLogin,userCtrl.addRemoveFriend);
+userRouter.patch('/:id/:followingId',checkLogin,userCtrl.addRemoveFollowing);
 
 module.exports = userRouter;
