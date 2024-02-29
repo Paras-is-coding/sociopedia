@@ -10,4 +10,4 @@ const ValidateRequest = (schema)=>{
     }
 }
 
-module.exports = ValidateRequest
+module.exports = ValidateRequest;

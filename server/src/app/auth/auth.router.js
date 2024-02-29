@@ -2,6 +2,7 @@ const authCtrl = require('./auth.controller');
 const uploader = require('../../middlewares/uploader.middleware');
 const checkLogin = require('../../middlewares/auth.middleware');
 const { passwordSchema, loginSchema, regSchema, forgetPasswordSchema } = require('./auth.validator');
+const ValidateRequest = require('../../middlewares/validate-request.middleware');
 
 const authRouter = require('express').Router();
 

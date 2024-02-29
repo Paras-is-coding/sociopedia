@@ -46,20 +46,20 @@ class PostController{
     }
 
 
-    likePost = async(req,res,next)=>{
-        try {
-            const updatedPost = await postSvc.likePost(req);
+    // likePost = async(req,res,next)=>{
+    //     try {
+    //         const updatedPost = await postSvc.likePost(req);
 
-            res.json({
-                result:{updatedPost},
-                message:"Successful like/unlike!",
-                meta:null
-            });
+    //         res.json({
+    //             result:{updatedPost},
+    //             message:"Successful like/unlike!",
+    //             meta:null
+    //         });
             
-        } catch (error) {
-            next(error)            
-        }
-    }
+    //     } catch (error) {
+    //         next(error)            
+    //     }
+    // }
 }
 
 

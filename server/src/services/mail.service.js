@@ -1,5 +1,6 @@
 require('dotenv').config();
-const nodemailer = require("nodemail")
+const nodemailer = require("nodemailer")
+
 
 class MailService {
     transport;

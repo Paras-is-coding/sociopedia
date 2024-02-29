@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const authSvc = require("./auth.services");
 const jwt = require("jsonwebtoken");
 const { getTokenFromHeader, generateRandomString } = require("../../config/helper");
-const mailSvc = require("../services/mail.service");
+const mailSvc = require("../../services/mail.service");
+
 require("dotenv").config();
 
 class AuthController {

@@ -37,22 +37,22 @@ class PostServices{
         return userPosts;
     }
 
-    likePost = async (req)=>{
-        const {id} = req.params;
-        const {userId} = req.body;
+    // likePost = async (req)=>{
+    //     const {id} = req.params;
+    //     const {userId} = req.body;
 
-        const post = await PostModel.findById(id);
-        const isLiked = post.likes.get(userId);
+    //     const post = await PostModel.findById(id);
+    //     const isLiked = post.likes.get(userId);
 
-        if(isLiked){
-            post.likes.delete(userId);
-        }else{
-            post.likes.set(userId,true);
-        }
+    //     if(isLiked){
+    //         post.likes.delete(userId);
+    //     }else{
+    //         post.likes.set(userId,true);
+    //     }
 
-        const updatedPost = await PostModel.findByIdAndUpdate(id,{likes:post.likes},{new:true});
-        return updatedPost;
-    }
+    //     const updatedPost = await PostModel.findByIdAndUpdate(id,{likes:post.likes},{new:true});
+    //     return updatedPost;
+    // }
 
 }
 

@@ -1,33 +1,16 @@
 const mongoose = require('mongoose');
 
-const postModelSchema = mongoose.Schema({
-    userId:{
-        type:String,
-        required:true,
-    },
-    firstname:{
-        type:String,
-        required:true,
-    },
-    lastname:{
-        type:String,
-        required:true,
-    },
-    location:String,
-    description:String,
+const postModelSchema = new mongoose.Schema({
+    user:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},
+    caption: { type: String },
     picturePath:String,
-    userPicturePath:String,
-    likes:{
-        type:Map,
-        of:Boolean,
-    },
-    comments:{
-        type:Array,
-        defaule:[],
-    }
+    location:String,
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
 },
 {
-    timestamps:true
+    timestamps:true,
+    autoCreate:true
 }
 );
 
