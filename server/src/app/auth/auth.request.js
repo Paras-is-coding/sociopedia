@@ -15,12 +15,12 @@ class AuthRequest{
     transformRequestData = ()=>{
         const payload = this.body;
 
-        if(this.file){
-            payload.picturePath = this.file.filename;
-        }
-        if(this.files){
-            payload.picturePath = this.files.map((file)=>file.filename);
-        }
+        // if(this.file){
+        //     payload.picturePath = this.file.filename;
+        // }
+        // if(this.files){
+        //     payload.picturePath = this.files.map((file)=>file.filename);
+        // }
 
 
         payload.viewedProfile = Math.floor(Math.random()*1000);

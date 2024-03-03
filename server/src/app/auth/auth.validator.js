@@ -1,9 +1,15 @@
 const { z } = require('zod');
 
 const regSchema = z.object({
-  firstname: z.string().min(2).max(50).required(true),
-  lastname: z.string().min(2).max(50).required(true),
-  email: z.string().email().max(50).required(true)
+  firstname: z.string().min(2).max(50).refine(data => data.length > 0, {
+    message: 'First name is required',
+  }),
+  lastname: z.string().min(2).max(50).refine(data => data.length > 0, {
+    message: 'Last name is required',
+  }),
+  email: z.string().email().refine(data => data.length > 0, {
+    message: 'Email is required',
+  }),
 });
 
 

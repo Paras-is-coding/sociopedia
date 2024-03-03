@@ -21,7 +21,7 @@ class AuthController {
 
       res.json({
         result: savedUser,
-        messsage: "User registered successfully!",
+        messsage: "User registered successfully! Check email to activate!",
         meta: null,
       });
     } catch (error) {
@@ -111,7 +111,7 @@ class AuthController {
             );
             let refreshToken = jwt.sign(
               { userId: userDetails._id },
-              process.env.JWT_SECRETKEY,
+              process.env.JWT_SECRET_KEY,
               { expiresIn: "1d" }
             );
 
@@ -147,7 +147,12 @@ class AuthController {
 
 
   getLoggedInUser = (req, res, next) => {
-    res.json({ authUser: req.authUser });
+    try {
+      res.json({ authUser: req.authUser });
+    } catch (error) {
+      next(error);
+      
+    }
   };
 
 

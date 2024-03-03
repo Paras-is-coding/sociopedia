@@ -1,18 +1,19 @@
 const authCtrl = require('./auth.controller');
-const uploader = require('../../middlewares/uploader.middleware');
+// const uploader = require('../../middlewares/uploader.middleware');
 const checkLogin = require('../../middlewares/auth.middleware');
 const { passwordSchema, loginSchema, regSchema, forgetPasswordSchema } = require('./auth.validator');
 const ValidateRequest = require('../../middlewares/validate-request.middleware');
 
 const authRouter = require('express').Router();
 
-// setup for picture upload path
-const dirSetup = (req,res,next)=>{
-    const uploadDir = './public/uploads/user';
-    req.uploadDir = uploadDir;
-    next();
-}
-authRouter.post('/register',dirSetup,uploader.single('picture'),ValidateRequest(regSchema),authCtrl.register);
+// // setup for picture upload path
+// const dirSetup = (req,res,next)=>{
+//     const uploadDir = './public/uploads/user';
+//     req.uploadDir = uploadDir;
+//     next();
+// }
+// authRouter.post('/register',dirSetup,uploader.single('picture'),ValidateRequest(regSchema),authCtrl.register);
+authRouter.post('/register',ValidateRequest(regSchema),authCtrl.register);
 
 authRouter.get('/verify-token/:token',authCtrl.verifyToken)
 

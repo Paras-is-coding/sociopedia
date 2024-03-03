@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { getTokenFromHeader } = require('../config/helper');
 const authSvc = require('../app/auth/auth.services');
-dotenv.config();
 
 
 const checkLogin = async (req, res, next) => {
@@ -27,7 +26,7 @@ const checkLogin = async (req, res, next) => {
           let patData = await authSvc.getPatByToken(token);
           if (patData) {
             // token = "token"
-            let data = jwt.verify(token, process.env.JWT_SECRETKEY);
+            let data = jwt.verify(token, process.env.JWT_SECRET_KEY);
             //data yo hunxa {userId:"",iat:"",exp:""}
             //TODO verify payload > here userId is payload in return of data
             let userDetail = await authSvc.getUserByFilter({
@@ -35,7 +34,8 @@ const checkLogin = async (req, res, next) => {
             });
   
             if (userDetail) {
-              req.authUser = userDetail; // sometimes in next midd. we may need this data
+              let {password,...rest} = userDetail?._doc;
+              req.authUser = rest; // sometimes in next midd. we may need this data
               next();
             } else {
               next({ code: 401, message: "User does not exist anymore" });
