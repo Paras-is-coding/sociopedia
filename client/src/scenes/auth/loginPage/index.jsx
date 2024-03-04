@@ -1,7 +1,60 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom'
+import * as yup from 'yup';
+import authSvc from '../authService';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+
 
 export default function LoginPage() {
+  const [loading,setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const loginSchema = yup.object({
+    email:yup.string().email().required(),
+    password: yup
+    .string()
+    .required('Password is required')
+});
+
+
+// react-hook-form implementation
+const {register, handleSubmit, formState:{errors}} = useForm({resolver:yupResolver(loginSchema)});
+
+
+const loginSubmit = async (data) =>{
+  try{
+      setLoading(true);      
+        // API Call
+      const response = await authSvc.loginProcess(data);
+          console.log(response)
+          setLoading(false);
+
+          toast.success(`Successfully logged in!`)
+          navigate('/home');
+    }catch(e){
+      setLoading(false);
+      console.log(e);
+      toast.error(e.response.data.message)
+      // e.response.data.message.map((obj)=>{
+      //   const keys = Object.keys(obj);
+      //   setError(keys[0],obj[keys[0]]);
+      // });
+    }
+}
+
+
+// For next time click on login
+const isLoggedIn = useSelector(state => state?.token !== null);
+useEffect(()=>{
+  if(isLoggedIn){
+      toast.info("You're already logged in!")
+      navigate('/home');
+  }
+},[isLoggedIn])
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -14,13 +67,16 @@ export default function LoginPage() {
        </div>
 
        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-         <form className="space-y-6" action="#" method="POST">
+         <form
+         onSubmit={handleSubmit(loginSubmit)}
+          className="space-y-6">
            <div>
              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                Email address
              </label>
              <div className="mt-2">
                <input
+               {...register("email",{required:true})}
                  id="email"
                  name="email"
                  type="email"
@@ -28,6 +84,9 @@ export default function LoginPage() {
                  required
                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                />
+               <span className='text-danger'>
+                            <em>{errors?.email?.message}</em>
+                            </span>
              </div>
            </div>
 
@@ -44,6 +103,7 @@ export default function LoginPage() {
              </div>
              <div className="mt-2">
                <input
+               {...register("password",{required:true})}
                  id="password"
                  name="password"
                  type="password"
@@ -51,6 +111,9 @@ export default function LoginPage() {
                  required
                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                />
+               <span className='text-danger'>
+                                <em>{errors?.password?.message}</em>
+                            </span>
              </div>
            </div>
 

@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import axiosInstance from "./axiosConfig";
 
 
@@ -15,7 +16,15 @@ import axiosInstance from "./axiosConfig";
 
        // here we'll set Authorization token too
        if(config && config.auth){
-        const token = localStorage.getItem('_au');
+        // const token = JSON.parse(localStorage.getItem('persist:auth'))['token'];
+
+         // Retrieve the token from Redux store
+  const token = useSelector((state) =>{
+    console.log('state from user walo '+state)
+    console.log(state?.token)
+  return state?.token
+});
+
         if(!token){
           throw new Error("Token not set!");
         }

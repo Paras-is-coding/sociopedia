@@ -1,0 +1,20 @@
+/* homeLayout.css */
+
+.home {
+    display: flex;
+    min-height: 100vh;
+    max-height: fit-content;
+  }
+  
+  .sidebar {
+    width: 250px; /* Set the width of the sidebar */
+    /* background-color: #333;
+    color: #fff; */
+  }
+  
+  .main {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  

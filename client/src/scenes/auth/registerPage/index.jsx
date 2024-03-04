@@ -35,12 +35,12 @@ const registerSubmit = async (data) =>{
       const response = await authSvc.registerProcess(data);
         console.log(response)
         setLoading(false);
-        toast.success(response.data.message)
+        toast.success(response?.message)
         navigate('/');
   }catch(e){
     setLoading(false);
     console.log(e);
-    toast.error(e.response.data.message)
+    toast.error(e.response?.message)
     // e.response.data.message.map((obj)=>{
     //   const keys = Object.keys(obj);
     //   setError(keys[0],obj[keys[0]]);
@@ -66,7 +66,7 @@ const registerSubmit = async (data) =>{
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSubmit(registerSubmit)} className="space-y-6" action="#" method="POST">
+          <form onSubmit={handleSubmit(registerSubmit)} className="space-y-6">
 
           <div>
               <div className="flex items-center justify-between">

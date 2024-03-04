@@ -1,53 +1,50 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    mode:"light",
-    user:null,
-    token:null,
-    posts:[]
+  mode: 'light',
+  token: null,
+  refreshToken: null,
+  posts: [],
 };
 
-
 export const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers:{
-        changeMode: (action,state)=>{
-            state.mode = state.mode === 'light'? 'dark':'light';
-        },
+  name: 'auth',
+  initialState,
+  reducers: {
+    changeMode: (state) => {
+      state.mode = state.mode === 'light' ? 'dark' : 'light';
+    },
 
-        setLogin: (action,state)=>{
-            state.user = action.payload.user;
-            state.token = action.payload.token;
-        },
+    setLogin: (state, action) => {
+      state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
+    },
 
-        setLogout: (action,state)=>{
-            state.user = null;
-            state.token = null;
-        },
+    setLogout: (state) => {
+      state.token = null;
+      state.refreshToken = null;
+    },
 
-        setFriends: (action,state)=>{
-            if(state.user){
-                state.user.friends = action.payload.friends;
-            }else{
-                console.error("User donot exist!")
-            }
-        },
+    setFriends: (state, action) => {
+      if (state.user) {
+        state.user.friends = action.payload.friends;
+      } else {
+        console.error('User does not exist!');
+      }
+    },
 
-        setPosts: (action,state)=>{
-            state.posts = action.payload.posts;
-        },
+    setPosts: (state, action) => {
+      state.posts = action.payload.posts;
+    },
 
-        setPost: (action,state)=>{
-            const updatedPosts = state.posts.map((post)=>{
-                if(post._id === action.payload.post_id){ return action.payload.post}
-                return post;
-            });
-            state.posts = updatedPosts;
-        }
-    }
-})
+    setPost: (state, action) => {
+      const updatedPosts = state.posts.map((post) =>
+        post._id === action.payload.post_id ? action.payload.post : post
+      );
+      state.posts = updatedPosts;
+    },
+  },
+});
 
-
-export const {changeMode,setLogin,setLogout,setFriends,setPosts,setPost} = authSlice.actions;
+export const { changeMode, setLogin, setLogout, setFriends, setPosts, setPost } = authSlice.actions;
 export default authSlice.reducer;
