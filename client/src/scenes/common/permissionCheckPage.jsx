@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import authSvc from '../auth/authService';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLogout } from '../../redux/features/authSlice';
+import { setLogout, setUser } from '../../redux/features/authSlice';
 import { Spinner } from '@material-tailwind/react';
 import { store } from '../../redux/store';
 
@@ -13,14 +13,10 @@ export default function PermissionCheck({Component}) {
         const dispatch = useDispatch();
         const navigate = useNavigate();
         console.log(store.getState());
-        const token = useSelector((state) =>{
-          console.log(state)
-          console.log(state?.token)
-        return state?.token
-      });
-      // const token = JSON.parse(localStorage.getItem('persist:auth'));
+        // const token = useSelector((state) => state?.auth?.token);
+      const lsState = JSON.parse(localStorage.getItem('persist:auth'));
+      const token = lsState?.token;
 
-        console.log("THe token is"+token)
         
         const [loading,setLoading] = useState(true);
 
@@ -34,14 +30,15 @@ export default function PermissionCheck({Component}) {
               if(!token){
                 toast.error("You are not logged in!");
                 navigate('/login');
+                return;
               }
               const response = await authSvc.getLoggedInUser();
-              console.log(response);
-              // Assuming you have a Redux action to update user data
-              // dispatch(setUserData(response?.authUser));
+              console.log("Get logged in ko response is  "+JSON.stringify(response));
+              //redux action to update user data
+              dispatch(setUser({authUser:response?.data?.authUser}));
               
             } catch (error) {
-              dispatch(setLogout());
+              // dispatch(setLogout());
               toast.error("You are not logged in!");
               navigate('/login');
               
@@ -52,7 +49,7 @@ export default function PermissionCheck({Component}) {
           };
          
           fetchData();
-        },[]);
+        },[token]);
 
         
         if(loading){
@@ -64,6 +61,6 @@ export default function PermissionCheck({Component}) {
       </div>
           </>)
         }else{
-          return <Component/>
+          return Component;
         }
 }

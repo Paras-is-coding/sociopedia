@@ -2,11 +2,14 @@ const mongoose = require('mongoose');
 
 const postModelSchema = new mongoose.Schema({
     user:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},
-    caption: { type: String },
+    firstname:String,
+    lastname:String,
+    caption:String,
     picturePath:String,
+    userPicturePath:String,
     location:String,
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    // likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],default:[],
+    // comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],default:[],
 },
 {
     timestamps:true,

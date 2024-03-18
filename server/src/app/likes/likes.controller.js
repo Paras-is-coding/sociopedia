@@ -2,7 +2,7 @@
 const LikesModel = require("./likes.model");
 
 class LikesController {
-  async addLike(req, res) {
+  async addLike(req, res,next) {
     try {
       const { postId, userId } = req.body;
 
@@ -20,12 +20,14 @@ class LikesController {
     }
   }
 
-  async removeLike(req, res) {
+  async removeLike(req, res,next) {
     try {
-      const { postId } = req.params;
+      const { postId} = req.params;
+      const {userId} = req.query;
+      console.log("p"+postId+" u"+userId)
 
       // Remove the like based on postId
-      await LikesModel.deleteOne({ postId });
+      await LikesModel.deleteOne({ postId,userId });
 
       res.json({
         result:{
@@ -39,7 +41,7 @@ class LikesController {
     }
   }
 
-  async getLikesForPost(req, res) {
+  async getLikesForPost(req, res,next) {
     try {
       const { postId } = req.params;
 
@@ -52,6 +54,23 @@ class LikesController {
         message: 'Likes fetched successfully',
         meta:null
     })
+    } catch (error) {
+      next(error);
+    }
+  }
+  async isLikedByUser(req, res,next) {
+    try {
+      const { postId}= req.params;
+      const { userId}= req.query;
+
+      // Find likes for the specified postId
+      const isLiked = await LikesModel.exists({ postId,userId });
+
+      res.json({
+        result: isLiked,
+        message: isLiked ? 'User has liked the post' : 'User has not liked the post',
+        meta: null
+      });
     } catch (error) {
       next(error);
     }

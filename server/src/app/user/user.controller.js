@@ -1,6 +1,41 @@
 const userSvc = require("./user.services");
 
 class UserController{
+    editProfile = async(req,res,next)=>{
+        try {
+            const {id} = req.params;
+            const userDetails = await userSvc.getUserByFilter({_id:id});
+            if(!userDetails){
+                return next({code:400,message:"User not found!"});
+            }
+
+             // Extract relevant data from the request body
+    const { firstName, lastName, bio, occupation, location, phone } = req.body;
+
+    // Update user details
+    const updatedUser = await userSvc.updateUser({_id:id}, {
+        firstName,
+        lastName,
+        picturePath:req?.file?.filename,
+        bio,
+        occupation,
+        location,
+        phone,
+      });
+
+      res.json({
+        result:{
+            user:updatedUser
+        },
+        message:"Profile edited successfully!",
+        meta:null
+      })
+
+            
+        } catch (error) {
+            next(error);            
+        }
+    }
     getUser = async (req,res,next)=>{
         try {
             const {id} = req.params;
@@ -97,13 +132,14 @@ class UserController{
             if(userDetails.following.includes(followingId)){
                 updatedFollowing = userDetails.following.filter((following)=> following !== followingId);
                 updatedFollowingsFollowers = following.followers.filter((follower)=> follower !== id);
+
             }else{
                 updatedFollowing = [...userDetails.following,followingId];
                 updatedFollowingsFollowers = [...following.followers,id];
             }
 
             const isUpdatedUser = await userSvc.updateUser({_id:id},{following:updatedFollowing});
-            const isUpdatedFollowings = await userSvc.updateUser({_id:followingId},{following:updatedFollowingsFollowers});
+            const isUpdatedFollowings = await userSvc.updateUser({_id:followingId},{followers:updatedFollowingsFollowers});
             const updatedUser = await userSvc.getUserByFilter({_id:id});
             const updatedFollowings = await userSvc.getUserByFilter({_id:followingId});
             delete updatedUser._doc.password;

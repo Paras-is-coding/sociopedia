@@ -2,17 +2,17 @@ const userSvc = require('../user/user.services.js');
 const PostModel = require('./post.model.js');
 class PostServices{
     createNewPost = async (payload) =>{
-        const {userId,description,picturePath} = payload;
-        const userDetails = await userSvc.getUserByFilter({_id:userId});
+        const {user,caption,picturePath} = payload;
+        const userDetails = await userSvc.getUserByFilter({_id:user});
 
         const newPost = new PostModel({
-            userId,
+            user,
             firstname:userDetails.firstname,
             lastname:userDetails.lastname,
             location:userDetails.location,
-            description,
+            caption,
             picturePath,
-            userPicturePath:userDetails.picture,
+            userPicturePath:userDetails.picturePath,
             likes:{},
             comments:[]
         });

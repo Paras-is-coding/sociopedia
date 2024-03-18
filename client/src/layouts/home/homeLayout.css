@@ -2,19 +2,31 @@
 
 .home {
     display: flex;
-    min-height: 100vh;
+    height: 94vh;
     max-height: fit-content;
   }
   
-  .sidebar {
-    width: 250px; /* Set the width of the sidebar */
-    /* background-color: #333;
-    color: #fff; */
-  }
+  /* .sidebar {
+    width: 240px;  Set the width of the sidebar 
+     background-color: #333;
+    color: #fff; 
+     position: fixed; 
+  } */
+
   
   .main {
     flex-grow: 1;
-    padding: 20px;
+    /* padding: 20px; */
     background-color: #f4f4f4;
+    flex-wrap: wrap;
   }
-  
+
+ 
+  .horizontalsidebar {
+    height: 6vh;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Make sure it spans the entire width */
+    z-index: 100; /* Ensure it appears above other elements */
+  }

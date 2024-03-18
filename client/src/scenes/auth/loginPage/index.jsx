@@ -5,12 +5,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import * as yup from 'yup';
 import authSvc from '../authService';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLogout } from '../../../redux/features/authSlice';
 
 
 export default function LoginPage() {
+
+
   const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginSchema = yup.object({
     email:yup.string().email().required(),
@@ -28,7 +32,7 @@ const loginSubmit = async (data) =>{
   try{
       setLoading(true);      
         // API Call
-      const response = await authSvc.loginProcess(data);
+      const response = await authSvc.loginProcess(data,dispatch);
           console.log(response)
           setLoading(false);
 
@@ -37,23 +41,45 @@ const loginSubmit = async (data) =>{
     }catch(e){
       setLoading(false);
       console.log(e);
-      toast.error(e.response.data.message)
+      toast.error(e.response?.data?.message)
       // e.response.data.message.map((obj)=>{
       //   const keys = Object.keys(obj);
       //   setError(keys[0],obj[keys[0]]);
       // });
     }
-}
-
-
-// For next time click on login
-const isLoggedIn = useSelector(state => state?.token !== null);
-useEffect(()=>{
-  if(isLoggedIn){
-      toast.info("You're already logged in!")
-      navigate('/home');
   }
-},[isLoggedIn])
+
+
+ // For next time click on login
+ const token = useSelector(state =>state?.auth?.token !== null && state?.token );
+ console.log("isLoggedIn walo token is "+token);
+  useEffect(()=>{
+   
+
+    const fetchData = async () =>{
+      try {
+        
+        if(token){
+          console.log(token)
+          const response = await authSvc.getLoggedInUser(token);
+        console.log("Get logged in ko response is  "+JSON.stringify(response));
+        if(response){
+          toast.success("Already logged in!")
+          navigate('/home');
+        }
+        }
+      
+      } catch (error) {
+        console.log("ERROR K aayo"+error)
+        toast.error(error);
+        dispatch(setLogout());
+      }
+    };
+   
+    fetchData();
+  },[token]);
+
+
 
   return (
     <>

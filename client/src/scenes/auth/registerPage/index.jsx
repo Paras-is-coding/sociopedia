@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 // import sociopedialogo from '../../../assets/images/sociopedialogo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 import {toast} from 'react-toastify';
@@ -11,7 +11,7 @@ import authSvc from '../authService';
 
 export default function RegisterPage() {
 const[loading,setLoading] = useState(false);
-
+const navigate = useNavigate();
 
 const registerSchema = yup.object({
   firstname:yup.string().min(2).max(30).required(),
@@ -35,7 +35,7 @@ const registerSubmit = async (data) =>{
       const response = await authSvc.registerProcess(data);
         console.log(response)
         setLoading(false);
-        toast.success(response?.message)
+        toast.success(response?.data?.message)
         navigate('/');
   }catch(e){
     setLoading(false);

@@ -1,10 +1,10 @@
 const { z } = require('zod');
 
 const likeSchema = z.object({
-  postId: z.string().uuid().refine((data) => !!data, {
+  postId: z.string().refine((data) => !!data, {
     message: 'postId is required',
   }),
-  userId: z.string().uuid().refine((data) => !!data, {
+  userId: z.string().refine((data) => !!data, {
     message: 'userId is required',
   }),
 });

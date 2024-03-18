@@ -1,5 +1,4 @@
-import { setLogin } from "../../redux/features/authSlice";
-import { store } from "../../redux/store";
+import { setLogin, setUser } from "../../redux/features/authSlice";
 import HttpService from "../../repository/httpService";
 
 class AuthService extends HttpService {
@@ -39,19 +38,29 @@ class AuthService extends HttpService {
     }
   }
 
-  loginProcess = async(userData)=>{
+  loginProcess = async(userData,dispatch)=>{
     try {
       const loginEndpoint = 'auth/login';
       const response = await this.postRequest(loginEndpoint,userData);
-      console.log('response is '+response)
+      console.log('response is '+JSON.stringify(response))
+   
+      console.log(response.data.token+"and "+ response.data.refreshToken)
       // localStorage.setItem('_au',response.data.token)
       // localStorage.setItem('_rt',response.data.refreshToken)
 
         // Dispatch action to store login data in Redux
-        store.dispatch(setLogin({
-          token: response.data.token,
-          refreshToken: response.data.refreshToken,
+        dispatch(setLogin({
+          token: response?.data?.token,
+          refreshToken: response?.data?.refreshToken,
         }));
+
+        // Dispatch authUser
+        const user = await this.getLoggedInUser();
+        console.log("user is "+user)
+        dispatch(setUser(user?.authUser));
+
+
+      
 
       return response;
       
@@ -60,10 +69,10 @@ class AuthService extends HttpService {
     }
   }
 
-  getLoggedInUser = async ()=>{
+  getLoggedInUser = async (token)=>{
     try {
       const userDetailsEndPoint = 'auth/me';
-      const response = await this.getRequest(userDetailsEndPoint,{auth:true});
+      const response = await this.getRequest(userDetailsEndPoint,{auth:true,token:token});
       return response;
     } catch (error) {
       throw error;      

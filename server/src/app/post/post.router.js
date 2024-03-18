@@ -14,7 +14,7 @@ const dirSetup = (req,res,next)=>{
 }
 
 // create
-postRouter.post("/",checkLogin,dirSetup,uploader.single("picture"),ValidateRequest(postSchema),postCtrl.createPost)
+postRouter.post("/",checkLogin,dirSetup,uploader.single("picturePath"),ValidateRequest(postSchema),postCtrl.createPost)
 
 
 // read

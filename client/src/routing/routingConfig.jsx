@@ -10,6 +10,12 @@ import { ForgetPasswordPage, LoginPage, RegisterPage, SetPasswordPage } from '..
 import Error404 from '../scenes/common/errorPage'
 import PermissionCheck from '../scenes/common/permissionCheckPage'
 import HomePage from '../scenes/homePage';
+import ChatPage from '../scenes/chatPage';
+import LandingLayout from '../layouts/landing/landingLayout';
+import NotificationsPage from '../scenes/notificationsPage';
+import ProfilePage from '../scenes/profilePage';
+import SettingsPage from '../scenes/settingsPage';
+import LogoutPage from '../scenes/logoutPage';
 
 export default function Routing() {
   return (
@@ -19,7 +25,7 @@ export default function Routing() {
     <Routes>
 
         {/* Nesting of routes -- parent/child routes */}
-        <Route path='/' element={<HomeLayout/>}>
+        <Route path='/' element={<LandingLayout/>}>
             <Route index element={<RegisterPage/>}></Route>
             <Route path='register' element={<RegisterPage/>}></Route>
             <Route path='/activate/:token' element={<SetPasswordPage/>}></Route>
@@ -31,13 +37,14 @@ export default function Routing() {
 
 
          {/* different view after login */}
-         {/* <Route path='/home' element={<PermissionCheck Component={<HomeLayout/>}/>}> */}
-         <Route path='/home' element={<HomeLayout/>}>
-                <Route index element={<HomePage/>}></Route>
-                {/* <Route path='banner' element={<Layouts.BannerLayout/>}>
-                    <Route index element={<BannerList/>}></Route>
-                    <Route path='create' element={<>create comp</>}></Route>
-                </Route> */}
+         <Route path='/home' element={<PermissionCheck Component={<HomeLayout/>}/>}>
+         {/* <Route path='/home' element={<HomeLayout/>}> */}
+                <Route index element={<HomePage/>}/>
+                <Route path='chats' element={<ChatPage/>}/>
+                <Route path='notifications' element={<NotificationsPage/>}/>
+                <Route path=':userId' element={<ProfilePage/>}/>
+                <Route path='settings' element={<SettingsPage/>}/>
+                <Route path='logout' element={<LogoutPage/>}/>
 
             </Route>
           

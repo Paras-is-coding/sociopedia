@@ -7,7 +7,7 @@ const commentsRouter = express.Router();
 
 // Define routes for comments
 commentsRouter.post('/comment',checkLogin,ValidateRequest(commentSchema), commentsController.addComment);
-commentsRouter.delete('/uncomment/:postId',checkLogin, commentsController.removeComment);
+commentsRouter.delete('/uncomment/:commentId',checkLogin, commentsController.removeComment);
 commentsRouter.get('/post/:postId', commentsController.getCommentsForPost);
 
 module.exports = commentsRouter;

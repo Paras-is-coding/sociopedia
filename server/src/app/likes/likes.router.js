@@ -9,5 +9,6 @@ const likesRouter = express.Router();
 likesRouter.post('/like',checkLogin,ValidateRequest(likeSchema), likesController.addLike);
 likesRouter.delete('/unlike/:postId', likesController.removeLike);
 likesRouter.get('/post/:postId', likesController.getLikesForPost);
+likesRouter.get('/isliked/:postId',checkLogin, likesController.isLikedByUser);
 
 module.exports = likesRouter;

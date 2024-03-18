@@ -1,13 +1,25 @@
 
+const userSvc = require("../user/user.services");
 const CommentsModel = require("./comments.model");
 
 class CommentsController {
-  async addComment(req, res) {
+  async addComment(req, res,next) {
     try {
-      const { postId, userId } = req.body;
+      const { postId, userId ,text} = req.body;
+      const userDetails = await userSvc.getUserByFilter({_id:userId});
+
 
       // Create and save a new comment
-      const newComment = new CommentsModel({ postId, userId });
+      const newComment = new CommentsModel({ 
+        postId, 
+        userId ,
+        text,
+        firstname:userDetails.firstname,
+        lastname:userDetails.lastname,
+        userPicturePath:userDetails.picturePath,
+
+      });
+     
       await newComment.save();
 
       res.json({
@@ -20,12 +32,12 @@ class CommentsController {
     }
   }
 
-  async removeComment(req, res) {
+  async removeComment(req, res,next) {
     try {
-      const { postId } = req.params;
+      const {commentId} = req.params;
 
       // Remove the comment based on postId
-      await CommentsModel.deleteOne({ postId });
+      await CommentsModel.deleteOne({_id:commentId });
 
       res.json({
         result:{
@@ -39,7 +51,7 @@ class CommentsController {
     }
   }
 
-  async getCommentsForPost(req, res) {
+  async getCommentsForPost(req, res,next) {
     try {
       const { postId } = req.params;
 
