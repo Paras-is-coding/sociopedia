@@ -30,47 +30,6 @@
      - Note: we receive file in req.file|files
 
 
-# auth component begin
-
-* src/app/auth/
-     - we'll manage seperate controller, model, router and services file for auth component|functionality
-
-- API- '/register' of auth 
-     - created '/register' route at auth.router.js, used uploader before controller midd. we may upload picture
-     - created UserModel at user.model.js we'll store some of info of user there while registering
-     - now register midd. of auth.controller.js
-          - first of req is send to auth.request.js for transformation, i.e adding additionl fields, hashPsw and more
-          - then payload is sent to auth.services.js to store them in DB
-     - Now our register API- route is completed
-
-- API- '/login' 
-     - create '/login' route
-     - create login controller middleware,
-          - create findUserByFilter auth.service and return userDetails
-          - if exist use bcrypt to compare passwords from req.body and userDetails.password
-          - if match generate jwt token and send 200 response else send respective error
-
-
-# authorization 
-
-* checkLogin middleware
-     - After logging in for every route that needs login we'll send jwt token on request and checkLogin middleware will verify the token
-     - middlewares/auth.middleware.js/
-          - checkLogin middleware -> getToken_jwt verify token_check if userexist_append authUser to req
-     - now we'll use this middleware before heading to controller midd. of auth router aftr login
-
-
-# user component API-routes
-- creating user CRUD routes, controller and all
-- we have route for getUser, getUserFriends, addRemoveFriend in userRouter
-
-# posts component API-routes
-- created createPost, getAllPosts and getUserPosts API-routes
-- created likePost API route
-     - take postId and userId, find post and see on it's like if userId is there, IF removes it IfNOT adds it and returns updatedPost
-
-
-
 # Begin frontend 
 - vite app setup and cleanup
 
@@ -103,8 +62,5 @@
  enabling the preservation of application state across page reloads, app restarts, or device reboots.
 
 
-
-# theme file
-- added theme file, color setup for project
 
 ...
