@@ -1,4 +1,5 @@
 const userSvc = require("./user.services");
+const { ObjectId } = require('mongodb');
 
 class UserController{
     editProfile = async(req,res,next)=>{
@@ -120,46 +121,59 @@ class UserController{
         }  
     }
 
-    addRemoveFollowing = async (req,res,next)=>{
+ 
+    addRemoveFollowing = async (req, res, next) => {
         try {
-            const {id,followingId} = req.params;
-            const userDetails = await userSvc.getUserByFilter({_id:id});
-            const following = await userSvc.getUserByFilter({_id:followingId});
-
-
-            let updatedFollowing, updatedFollowingsFollowers;
-
-            if(userDetails.following.includes(followingId)){
-                updatedFollowing = userDetails.following.filter((following)=> following !== followingId);
-                updatedFollowingsFollowers = following.followers.filter((follower)=> follower !== id);
-
-            }else{
-                updatedFollowing = [...userDetails.following,followingId];
-                updatedFollowingsFollowers = [...following.followers,id];
+            const { id, followingId } = req.params;
+            const userDetails = await userSvc.getUserByFilter({ _id: id });
+            const followingUser = await userSvc.getUserByFilter({ _id: followingId });
+    
+            let updatedFollowing = [];
+            let updatedFollowingsFollowers = [];
+    
+            if (userDetails.following.includes(followingId)) {
+                // Remove the followingId from the user's following list
+                const followingObjectId = new ObjectId(followingId);
+                updatedFollowing = userDetails.following.filter((userId) => !userId.equals(followingObjectId));
+                console.log(updatedFollowing)
+                // Remove the id from the following user's followers list
+                const idObject = new ObjectId(id);
+                updatedFollowingsFollowers = followingUser.followers.filter((followerId) => !followerId.equals(idObject));
+            } else {
+                console.log("Follow samman pugew")
+                // Add the followingId to the user's following list
+                updatedFollowing = [...userDetails.following, followingId];
+                // Add the id to the following user's followers list
+                updatedFollowingsFollowers = [...followingUser.followers, id];
             }
-
-            const isUpdatedUser = await userSvc.updateUser({_id:id},{following:updatedFollowing});
-            const isUpdatedFollowings = await userSvc.updateUser({_id:followingId},{followers:updatedFollowingsFollowers});
-            const updatedUser = await userSvc.getUserByFilter({_id:id});
-            const updatedFollowings = await userSvc.getUserByFilter({_id:followingId});
+    
+            // Update the user's following list
+            const isUpdatedUser = await userSvc.updateUser({ _id: id }, { following: updatedFollowing });
+            // Update the following user's followers list
+            const isUpdatedFollowingUser = await userSvc.updateUser({ _id: followingId }, { followers: updatedFollowingsFollowers });
+    
+            // Fetch updated user and following user details
+            const updatedUser = await userSvc.getUserByFilter({ _id: id });
+            const updatedFollowingUser = await userSvc.getUserByFilter({ _id: followingId });
+    
+            // Omit password fields from the response
             delete updatedUser._doc.password;
-            delete updatedFollowings._doc.password;
-
+            delete updatedFollowingUser._doc.password;
+    
             res.json({
-                result:{
+                result: {
                     isUpdatedUser,
-                    isUpdatedFollowings,
-                    user:updatedUser,
-                    friend:updatedFollowings
+                    isUpdatedFollowingUser,
+                    user: updatedUser,
+                    followingUser: updatedFollowingUser
                 },
-                message:"User updated successfully!",
-                meta:null
-            })
-
+                message: "User updated successfully!",
+                meta: null
+            });
         } catch (error) {
-            next(error)            
+            next(error);
         }
-    }
+    };
     
 
 

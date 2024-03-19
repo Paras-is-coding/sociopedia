@@ -20,6 +20,39 @@ class PostController{
             next(error)            
         }
     }
+    updatePost = async (req, res, next) => {
+        try {
+            const postId = req.params.postId; 
+            const payload = new PostRequest(req).transformRequestData();
+
+            // Call the service function to update the post
+            const updatedPost = await postSvc.updatePost(postId, payload);
+
+            res.json({
+                result: updatedPost,
+                message: "Post updated successfully!",
+                meta: null
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
+    deletePost = async (req, res, next) => {
+        try {
+            const postId = req.params.postId;
+
+            // Call the service function to delete the post
+            await postSvc.deletePost(postId);
+
+            res.json({
+                message: "Post deleted successfully!",
+                meta: null
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
+
     getFeedPosts = async(req,res,next)=>{
         try {
             const allPosts = await postSvc.getFeedPosts();

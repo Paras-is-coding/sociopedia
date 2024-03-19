@@ -60,6 +60,8 @@ import axiosInstance from "./axiosConfig";
      patchRequest = async (url,data={}, config = null) => {
        try {
          this.getHeader(config);
+         console.log("URL",url)
+         console.log("dataaa",data)
          const response = await axiosInstance.patch(url,data, { headers: this.headers });
          return response;
        } catch (error) {

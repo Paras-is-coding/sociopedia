@@ -77,7 +77,7 @@ const mergeContacts = (existingContacts, newContacts) => {
   };
 
   return (
-    <Container>
+    <Container className='min-h-[98vh]'>
       <div className="py-2 px-6 border-b border-gray-200">
         <h1 className="text-xl font-bold text-gray-800 mb-2">Chats</h1>
       </div>
@@ -99,7 +99,7 @@ const mergeContacts = (existingContacts, newContacts) => {
 }
 
 const Container = styled.div`
-  max-height: 94vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

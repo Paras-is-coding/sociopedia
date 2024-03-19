@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Contacts({ contacts, currentUser, changeChat }) {
@@ -32,7 +33,8 @@ export default function Contacts({ contacts, currentUser, changeChat }) {
                   onClick={() => changeCurrentChat(index, contact)}
                 >
                   <div className="avatar">
-                    <img src={`${contact && contact.picturePath}`} alt="User" />
+                    <img src={contact && `${import.meta.env.VITE_API_URL}images/user/${
+                    contact?.picturePath}`} alt="User" />
                   </div>
                   <div className="username flex flex-wrap">
                     <h3>{`${contact.firstname} ${contact.lastname}`}</h3>
@@ -42,12 +44,20 @@ export default function Contacts({ contacts, currentUser, changeChat }) {
           </div>
           <div className="separator"></div>
           <div className="current-user">
+            <Link
+            to={`/home/${currentUser?._id}`}
+            >
             <div className="avatar">
-              <img src={`${currentUserImage}`}  alt="User" />
+              <img src={`${import.meta.env.VITE_API_URL}images/user/${currentUserImage}`}  alt="User" />
             </div>
+            </Link>
+            <Link
+            to={`/home/${currentUser?._id}`}
+            >
             <div className="username">
               <h2>{currentUserName}</h2>
             </div>
+            </Link>
           </div>
         </Container>
       )}
@@ -101,8 +111,11 @@ const Container = styled.div`
       .avatar {
         img {
           height: 2rem;
-          width:2rem;
-          border-radius:50%;
+    width: 2rem;
+    border-radius: 50%; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    max-inline-size: 100%;
+    object-fit: cover;
         }
       }
       .username {
@@ -132,9 +145,11 @@ const Container = styled.div`
     .avatar {
       img {
         height: 2rem;
-          width:2rem;
-          border-radius:50%;
+        width: 2rem;
+        border-radius: 50%; 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
         max-inline-size: 100%;
+        object-fit: cover;
       }
     }
     .username {

@@ -6,12 +6,32 @@ class PostService extends HttpService {
   createPost = async (postData)=>{
     try {
       const createPostEndPoint = `posts`;
-      const response = await this.postRequest(createPostEndPoint,postData,{auth:true});
+      const response = await this.postRequest(createPostEndPoint,postData,{auth:true,file:true});
       return response;
     } catch (error) {
       throw error;      
     }
   }
+  updatePost = async (postId,postData)=>{
+    try {
+      const createPostEndPoint = `posts/${postId}`;
+      const response = await this.patchRequest(createPostEndPoint,postData,{auth:true,file:true});
+      return response;
+    } catch (error) {
+      throw error;      
+    }
+  }
+  
+  deletePost = async (postId) => {
+    try {
+      const deletePostEndPoint = `posts/${postId}`;
+      const response = await this.deleteRequest(deletePostEndPoint, { auth: true });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   getAllPosts = async ()=>{
     try {
       const createPostEndPoint = `posts`;

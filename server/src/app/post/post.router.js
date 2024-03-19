@@ -21,7 +21,12 @@ postRouter.post("/",checkLogin,dirSetup,uploader.single("picturePath"),ValidateR
 postRouter.get("/",checkLogin,postCtrl.getFeedPosts)
 postRouter.get("/:userId",checkLogin,postCtrl.getUserPosts)
 
-// // update
+//  update
+postRouter.patch("/:postId", checkLogin, dirSetup, uploader.single("picturePath"), ValidateRequest(postSchema), postCtrl.updatePost)
+
+// delete
+postRouter.delete("/:postId", checkLogin, postCtrl.deletePost);
+
 // postRouter.patch("/like/:id",checkLogin,postCtrl.likePost)
 
 

@@ -37,6 +37,49 @@ class PostServices{
         return userPosts;
     }
 
+
+    updatePost = async (postId, payload) => {
+
+        const { caption, location, picturePath } = payload;
+        const post = await PostModel.findById(postId);
+
+        // Check if the post exists
+        if (!post) {
+            throw new Error("Post not found");
+        }
+
+        // Update the fields in the post object
+        post.caption = caption || post.caption;
+        post.location = location || post.location;
+
+        // If picturePath is provided, update it
+        if (picturePath) {
+            post.picturePath = picturePath;
+        }
+
+        // Save the updated post
+        const updatedPost = await post.save();
+
+        return updatedPost;
+    };
+
+    deletePost = async (postId) => {
+        try {
+            // Find the post by its ID
+            const post = await PostModel.findById(postId);
+    
+            // Check if the post exists
+            if (!post) {
+                throw new Error("Post not found");
+            }
+    
+            // Delete the post
+            await PostModel.findByIdAndDelete(postId);
+        } catch (error) {
+            throw error;
+        }
+    };
+    
     // likePost = async (req)=>{
     //     const {id} = req.params;
     //     const {userId} = req.body;

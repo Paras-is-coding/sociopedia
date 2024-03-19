@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import EditProfilePopupComponent from "../../components/profile/editProfilePopup";
 import FollowersFollowingPopupComponent from "../../components/profile/FollowersFollowingPopupComponent";
 import userSvc from "./userService";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function ProfilePage() {
@@ -25,14 +25,15 @@ export default function ProfilePage() {
 
   // Function to close any popup
   const closePopup = () => {
+    console.log("triggered")
     setEditProfilePopupOpen(false);
     setFollowersPopupOpen(false);
     setFollowingPopupOpen(false);
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("persist:auth"))?.user;
-    const userObject = JSON.parse(user);
+    const  luser = JSON.parse(localStorage.getItem("persist:auth"))?.user;
+    const userObject = JSON.parse(luser);
     setLocalUser(userObject);
   }, []);
 
@@ -40,11 +41,12 @@ export default function ProfilePage() {
     setEditProfilePopupOpen(true);
   };
 
-  const handleFollowUnfollow = async (userId) => {
+  const handleFollowUnfollow = async (userId,reqTo) => {
     try {
-      await userSvc.addRemoveFollowing(userId);
-      // Refresh data after unfollowing
-      fetchData();
+      const response = await userSvc.addRemoveFollowing(userId);
+      console.log("Follow/unfollow response: ",response);
+      toast.info(`${reqTo}ed successfully!`);
+      window.location.reload();
     } catch (error) {
       console.log("Error unfollowing user:", error);
       toast.error(`Error unfollowing user: ${error}`);
@@ -102,7 +104,9 @@ export default function ProfilePage() {
               <img
                 className="object-cover w-full h-full"
                 src={
-                  user?.picturePath ||
+                  `${import.meta.env.VITE_API_URL}images/user/${
+                    user?.picturePath
+                  }` ||
                   "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 }
                 alt="Profile"
@@ -155,19 +159,30 @@ export default function ProfilePage() {
             <>
               {user?.followers?.includes(localUser._id) ? (
                 <button
-                  onClick={() => handleFollowUnfollow(user?._id)}
+                  onClick={() => handleFollowUnfollow(user?._id,"Unfollow")}
                   className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-gray-400 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-300 ease-in-out"
                 >
                   Unfollow
                 </button>
               ) : (
                 <button
-                  onClick={() => handleFollowUnfollow(user?._id)}
+                  onClick={() => handleFollowUnfollow(user?._id,"Follow")}
                   className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-blue-400 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out"
                 >
                   Follow
                 </button>
+            
               )}
+              <Link
+              to={'/home/chats'}
+              >
+              <button
+                className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-gray-400 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-300 ease-in-out"
+              >
+                Message
+              </button>
+              </Link>
+              
             </>
           )}
 

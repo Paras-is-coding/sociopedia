@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SearchBar from '../../components/searchBar'
-import PostCard from '../../components/postCard';
+import PostCard from '../../components/post/postCard';
 import postSvc from './homeService';
 // import { Outlet } from 'react-router-dom'
 

@@ -12,8 +12,8 @@ const app = express();
 app.use(cors({origin:process.env.CORS_ORIGIN}))
 
 // helmet and morgan for safety and logging
-app.use(helmet());
-app.use(helmet.contentSecurityPolicy({policy:"cross-origin"}));
+// app.use(helmet());
+// app.use(helmet.contentSecurityPolicy({policy:"cross-origin"}));
 
 app.use(express.static('public/uploads'));
   

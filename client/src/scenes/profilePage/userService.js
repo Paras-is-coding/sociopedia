@@ -54,7 +54,7 @@ class UserService extends HttpService {
 
 
       const addRemoveFollowingEP = `user/${uid}/${id}`;
-      const response = await this.patchRequest(addRemoveFollowingEP,{auth:true});
+      const response = await this.patchRequest(addRemoveFollowingEP,{},{auth:true});
       return response;
     } catch (error) {
       throw error;      
@@ -65,7 +65,7 @@ class UserService extends HttpService {
       const parsedState = JSON.parse(localStorage.getItem('persist:auth'));
       const uid = (JSON.parse(parsedState?.user))?._id;
       const editProfileEP = `user/${uid}/editProfile`;
-      const response = await this.patchRequest(editProfileEP,data,{auth:true});
+      const response = await this.patchRequest(editProfileEP,data,{auth:true,file:true});
       return response;
     } catch (error) {
       throw error;      

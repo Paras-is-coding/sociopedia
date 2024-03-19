@@ -1,35 +1,37 @@
 import React, { useEffect, useState } from "react";
-import postSvc from "../../scenes/homePage/homeService";
-import CommentComponent from "../comment";
-import CommentForm from "../commentForm";
+import { Link } from "react-router-dom"; 
+import postSvc from "../../../scenes/homePage/homeService";
+import CommentComponent from "../../comment";
+import CommentForm from "../../commentForm";
 import { toast } from "react-toastify";
+import "../../../assets/css/customScrollbar.css";
+import EditPostPopup from "../editPost/EditPostPopup";
 
 export default function PostCard({ postDetails, userDetails }) {
   const [postTime, setPostTime] = useState("");
   const [comments, setComments] = useState([]);
-  const [likes,setLikes] = useState([]);
-  const [isLiked,setIsLiked] = useState(false);
+  const [likes, setLikes] = useState([]);
+  const [isLiked, setIsLiked] = useState(false);
   const [commentMode, setCommentMode] = useState(false);
-console.log(postDetails)
+  const [showMenu, setShowMenu] = useState(false);
+  const [editPostPopupOpen, setEditPostPopupOpen] = useState(false); // State to track whether the edit post popup is open
+
   function toggleCommentMode() {
     commentMode ? setCommentMode(false) : setCommentMode(true);
   }
 
   const handleLikeClicked = async () => {
     try {
-      if(!isLiked){
+      if (!isLiked) {
         await postSvc.addLike({
           postId: postDetails?._id,
           userId: userDetails?._id,
         });
-      }else{
-        await postSvc.unlike(
-          postDetails?._id,
-          userDetails?._id,
-        );
+      } else {
+        await postSvc.unlike(postDetails?._id, userDetails?._id);
       }
-     // Refresh the page after liking or unliking
-    window.location.reload();
+      // Refresh the page after liking or unliking
+      window.location.reload();
     } catch (error) {
       toast.error("Error liking post ", error);
     }
@@ -65,6 +67,7 @@ console.log(postDetails)
   }, [postDetails]);
 
   useEffect(() => {
+    console.log(postDetails);
     const fetchData = async () => {
       try {
         const cmts = (await postSvc.commentsForPost(postDetails?._id))?.data
@@ -75,12 +78,12 @@ console.log(postDetails)
           ?.result;
         setLikes(lks);
 
-        const isLiked = (await postSvc.isLikedByUser(postDetails?._id,userDetails?._id))?.data
-          ?.result;
-          if(isLiked){
-              setIsLiked(true);
-          }
-        
+        const isLiked = (
+          await postSvc.isLikedByUser(postDetails?._id, userDetails?._id)
+        )?.data?.result;
+        if (isLiked) {
+          setIsLiked(true);
+        }
       } catch (error) {
         console.log("Error : ", error);
       }
@@ -89,27 +92,57 @@ console.log(postDetails)
     fetchData();
   }, []);
 
+  const handleMenuToggle = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const handleEditPost = () => {
+    setEditPostPopupOpen(true);
+  };
+
+  const handleDeletePost = async () => {
+    try {
+      await postSvc.deletePost(postDetails?._id); 
+      toast.info("Post deleted successfully!");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Error deleting post ", error);
+    }
+  };
+
   return (
     <div className="bg-gray-100 h-auto flex items-center justify-center w-full">
       <div className="bg-white p-8 rounded-lg shadow-md w-4/5 md:w-2/3">
         {/* User Info with Three-Dot Menu */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2 ">
+            <Link
+            to={`${postDetails?.user}`}
+            >
             <img
-              src={`${import.meta.env.VITE_API_URL}posts/${
-                postDetails.picturePath
+              src={`${import.meta.env.VITE_API_URL}images/user/${
+                postDetails?.userPicturePath
               }`}
               alt="User Avatar"
-              className="w-8 h-8 rounded-full"
+              className="w-8 h-8 rounded-full object-cover"
             />
+            </Link>
             <div>
+            <Link
+            to={`${postDetails?.user}`}
+            >
               <p className="text-gray-800 font-semibold">{`${postDetails?.firstname} ${postDetails?.lastname}`}</p>
+              </Link>
               <p className="text-gray-500 text-sm">{postTime}</p>
             </div>
           </div>
-          <div className="text-gray-500 cursor-pointer">
+
+          <div className="text-gray-500 cursor-pointer relative">
             {/* Three-dot menu icon */}
-            <button className="hover:bg-gray-50 rounded-full p-1">
+            <button
+              onClick={handleMenuToggle}
+              className="hover:bg-gray-50 rounded-full p-1"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -126,6 +159,36 @@ console.log(postDetails)
                 <circle cx="12" cy="17" r="1" />
               </svg>
             </button>
+            {/* Menu */}
+            {showMenu && (
+              <div className="absolute bg-white shadow-md rounded-md py-2 w-48 right-0 top-full mt-2">
+                {postDetails?.user === userDetails?._id ? (
+                  <>
+                    <button
+                    onClick={handleEditPost}
+                     className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                      Edit
+                    </button>
+                    <button
+                    onClick={handleDeletePost}
+                     className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                      {userDetails.following.includes(postDetails?.user)
+                        ? `Unfollow ${postDetails?.firstname}`
+                        : "Follow"}
+                    </button>
+                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                      Save Post
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
         {/* Message */}
@@ -135,22 +198,24 @@ console.log(postDetails)
         {/* Image */}
         <div className="mb-4 ">
           <img
-            src={`${import.meta.env.VITE_API_URL}posts/${
+            src={`${import.meta.env.VITE_API_URL}images/posts/${
               postDetails?.picturePath
             }`}
             alt="Post Image"
-            className="w-full h-48 object-cover rounded-md"
+            className="w-auto mx-auto h-[50vh] object-fit rounded-md"
           />
         </div>
         {/* Like and Comment Section */}
-        <div className="flex items-center justify-between text-gray-500 ">
+        <div className="flex items-center justify-between text-gray-500 "> 
           <div
             className={`flex items-center space-x-2  `}
             onClick={handleLikeClicked}
           >
             <button className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
               <svg
-                className={`w-5 h-5 fill-current ${isLiked?"text-red-500":""}`}
+                className={`w-5 h-5 fill-current ${
+                  isLiked ? "text-red-500" : ""
+                }`}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
               >
@@ -197,12 +262,22 @@ console.log(postDetails)
           </p>
         )}
         <hr className="mt-2 mb-2" />
-        <div className="mt-4">
+        <div className="mt-4 h-40 overflow-auto custom-scrollbar">
           {comments &&
             comments.map((comment) => (
               <CommentComponent key={comment?.createdAt} comment={comment} />
             ))}
         </div>
+
+             {/* Edit Post Popup */}
+        {editPostPopupOpen && (
+          <EditPostPopup 
+            user={userDetails}
+            postDetails={postDetails}
+            closeEditPostPopup={() => setEditPostPopupOpen(false)}
+          />
+        )}
+
       </div>
     </div>
   );
