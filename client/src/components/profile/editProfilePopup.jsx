@@ -5,6 +5,8 @@ import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import "../../assets/css/customScrollbar.css";
+import { FaImage } from "react-icons/fa";
+
 
 export default function EditProfilePopupComponent({ user, closeEditProfilePopup}) {
   const [previewImage, setPreviewImage] = useState(null);
@@ -107,10 +109,10 @@ export default function EditProfilePopupComponent({ user, closeEditProfilePopup}
           className="mt-4 space-y-4 text-gray-600"
         >
           <div className="py-2 px-6 border-b border-gray-200">
-            <h1 className="text-xl font-bold text-gray-800 mb-2">
+            <h1 className="text-xl font-bold text-gray-800 mb-2 text-center">
               Edit Profile
             </h1>
-            <div className="w-10 h-1 bg-gray-500"></div>
+            <div className="w-full h-[1px] bg-gray-400"></div>
           </div>
 
           {/* Display previous profile picture if available */}
@@ -130,15 +132,20 @@ export default function EditProfilePopupComponent({ user, closeEditProfilePopup}
             </div>
           )}
 
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
             <label className="w-1/3">Profile Picture:</label>
-            <input
-              type="file"
-              accept="image/*"
-              className="w-2/3 border rounded p-2"
-              // {...register('picturePath')}
-              onChange={handleImageUpload}
-            />
+             <div className="relative w-full">
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="picturePath"
+                  className="w-2/3 border rounded absolute hidden cursor-pointer inset-0"
+                  onChange={handleImageUpload}
+                />
+                <label htmlFor="picturePath" className="cursor-pointer text-2xl">
+                  <FaImage className="text-gray-600" />
+                </label>{" "}
+              </div>
             {errors.picturePath && (
               <p className="text-red-500">{errors.picturePath.message}</p>
             )}

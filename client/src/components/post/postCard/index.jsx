@@ -67,7 +67,7 @@ export default function PostCard({ postDetails, userDetails }) {
   }, [postDetails]);
 
   useEffect(() => {
-    console.log(postDetails);
+    // console.log(postDetails);
     const fetchData = async () => {
       try {
         const cmts = (await postSvc.commentsForPost(postDetails?._id))?.data
@@ -196,7 +196,7 @@ export default function PostCard({ postDetails, userDetails }) {
           <p className="text-gray-800">{postDetails?.caption}</p>
         </div>
         {/* Image */}
-        <div className="mb-4 ">
+        {/* <div className="mb-4 ">
           <img
             src={`${import.meta.env.VITE_API_URL}images/posts/${
               postDetails?.picturePath
@@ -204,7 +204,15 @@ export default function PostCard({ postDetails, userDetails }) {
             alt="Post Image"
             className="w-auto mx-auto h-[50vh] object-fit rounded-md"
           />
-        </div>
+        </div> */}
+          {/* Image */}
+          <div className="mb-4 mx-auto w-[100%] sm:w-4/5 h-[40vh] sm:h-[60vh] flex justify-center items-center">
+  <img
+    src={`${import.meta.env.VITE_API_URL}images/posts/${postDetails?.picturePath}`}
+    alt="Post Image"
+    className="max-w-full min-h-full min-w-[100%] max-h-full object-contain"
+  />
+</div>
         {/* Like and Comment Section */}
         <div className="flex items-center justify-between text-gray-500 "> 
           <div

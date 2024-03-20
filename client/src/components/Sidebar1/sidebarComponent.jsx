@@ -47,17 +47,29 @@ const SidebarComponent = () => {
 
   return (
     <div className="min-h-screen fixed flex flex-row bg-gray-100 ">
-      <div className="flex flex-col w-20 md:w-60 bg-white rounded-r-3xl overflow-hidden">
+      <div className="flex flex-col w-20 md:w-60 bg-gray-100 rounded-r-3xl overflow-hidden">
         <div className="flex items-center justify-center h-20 shadow-md">
-          <h1 className="text-3xl uppercase text-gray-600 hidden md:block">
+        <Link
+            to={'/home'}
+            >
+          {/* <h1 className="text-3xl uppercase text-gray-600 hidden md:block">
             Sociopedia
-          </h1>
+          </h1> */}
+          <h1 className="text-xl hidden md:block md:text-2xl lg:text-3xl font-bold uppercase text-gray-700 tracking-wide leading-tight transform hover:scale-105 transition duration-300">
+  Sociopedia
+</h1>
+
+          </Link>
           <div className=" md:hidden flex-shrink-0 items-center ">
+          <Link
+            to={'/home'}
+            >
             <img
               className="h-8 w-auto rounded-lg"
               src={sociopedialogo}
               alt="SOCIOPEDIA"
             />
+            </Link>
           </div>
         </div>
         <ul className="flex flex-col py-14 mx-auto">

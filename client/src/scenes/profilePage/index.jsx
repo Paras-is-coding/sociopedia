@@ -4,6 +4,7 @@ import FollowersFollowingPopupComponent from "../../components/profile/Followers
 import userSvc from "./userService";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import postSvc from "../homePage/homeService";
 
 export default function ProfilePage() {
   const [user, setUser] = useState({});
@@ -12,6 +13,7 @@ export default function ProfilePage() {
   const [isFollowersPopupOpen, setFollowersPopupOpen] = useState(false);
   const [isFollowingPopupOpen, setFollowingPopupOpen] = useState(false);
   const { userId } = useParams();
+  const [userPosts,setUserPosts] = useState([]);
 
   // Function to open followers popup
   const openFollowersPopup = () => {
@@ -60,6 +62,11 @@ export default function ProfilePage() {
         const response = await userSvc.getUser(userId);
         console.log(response);
         setUser(response?.data?.result?.user);
+
+        const userPostsResponse = await postSvc.getUserPosts(userId); 
+        console.log("up",userPostsResponse)
+        const userPosts = userPostsResponse.data?.result?.userPosts; 
+        setUserPosts(userPosts);
       } catch (error) {
         console.log("Error fetching user:", error);
       }
@@ -130,13 +137,13 @@ export default function ProfilePage() {
               </p>
               <p className="text-sm text-gray-400">Posts</p>
             </div>
-            <div onClick={openFollowersPopup}>
+            <div onClick={openFollowersPopup} className="cursor-pointer">
               <p className="text-lg font-semibold text-black">
                 {user?.followers?.length}
               </p>
               <p className="text-sm text-gray-400">Followers</p>
             </div>
-            <div onClick={openFollowingPopup}>
+            <div onClick={openFollowingPopup} className="cursor-pointer">
               <p className="text-lg font-semibold text-black">
                 {user?.following?.length}
               </p>
@@ -220,21 +227,24 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 my-3 bg-gray-100">
-          {/* Replace the image URLs with your own */}
-          {[...Array(9)].map((_, index) => (
-            <a
-              key={index}
-              className="block bg-center bg-no-repeat bg-cover h-40 w-full rounded-lg"
-              href=""
-              style={{
-                backgroundImage: `url('https://images.pexels.com/photos/${
-                  index + 1
-                }.jpg')`,
-              }}
-            ></a>
-          ))}
-        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-3">
+  {/* Render user posts */}
+  {userPosts.map((post) => (
+    <div key={post?._id} className=" aspect-w-1 aspect-h-1">
+      <div className="w-full h-full">
+        <img
+          className="w-full h-full object-cover rounded-lg border border-gray-200"
+          src={`${import.meta.env.VITE_API_URL}images/posts/${post?.picturePath}`}
+          alt="Post"
+        />
+      </div>
+    </div>
+  ))}
+</div>
+
+
+
+
       </div>
 
       {/* <div className="flex justify-between items-center bg-gray-600 bg-opacity-20 px-10 py-5 rounded-full text-gray-500">

@@ -60,6 +60,23 @@ class UserController{
     }
 
 
+    getAllUsers = async (req, res, next) => {
+        try {
+          const searchKeyword = req.query['search'];
+      
+          // Call the service function with search parameter
+          const allUsers = await userSvc.getAllUsers(searchKeyword);
+      
+          res.json({
+            result: allUsers,
+            message: "Successfully fetched all users!",
+            meta:null
+          });
+        } catch (error) {
+          next(error);
+        }
+      };
+
     getUserFollowers = async (req,res,next)=>{
         try {
             const {id} = req.params;

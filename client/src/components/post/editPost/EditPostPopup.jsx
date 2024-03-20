@@ -4,6 +4,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from 'react-toastify';
 import postSvc from '../../../scenes/homePage/homeService';
+import { FaImage } from "react-icons/fa";
+
 
 const schema = yup.object().shape({
   caption: yup.string().required("Caption is required"),
@@ -105,10 +107,10 @@ const EditPostPopup = ({ postDetails, closeEditPostPopup, user}) => {
           {/* Edit Post Form */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="py-2 px-6 border-b border-gray-200">
-              <h1 className="text-xl font-bold text-gray-800 mb-2">
+              <h1 className="text-xl font-bold text-gray-800 mb-2 text-center">
                 Edit Post
               </h1>
-              <div className="w-10 h-1 bg-gray-500"></div>
+              <div className="w-full h-[1px] bg-gray-400"></div>
             </div>
             <div className="mb-4">
               <label htmlFor="caption" className="block text-gray-700">
@@ -141,17 +143,22 @@ const EditPostPopup = ({ postDetails, closeEditPostPopup, user}) => {
                 />
               </div>
             )}
-            <div className="mb-4">
+            <div className="mb-4 flex gap-4 pt-2">
               <label htmlFor="picturePath" className="block text-gray-700">
                 Image:
               </label>
-              <input
-                type="file"
-                accept="image/*"
-                id="picturePath"
-                className="w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                onChange={handleImageUpload}
-              />
+               <div className="relative w-full">
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="picturePath"
+                  className="w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 absolute hidden cursor-pointer inset-0"
+                  onChange={handleImageUpload}
+                />
+                <label htmlFor="picturePath" className="cursor-pointer text-2xl">
+                  <FaImage className="text-gray-600" />
+                </label>{" "}
+              </div>
               {errors.picturePath && (
                 <span className="text-red-500">
                   {errors.picturePath.message}

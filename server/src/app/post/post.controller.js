@@ -53,18 +53,29 @@ class PostController{
         }
     };
 
-    getFeedPosts = async(req,res,next)=>{
+    getFeedPosts = async(req, res, next) => {
         try {
-            const allPosts = await postSvc.getFeedPosts();
+            const page = req.query['page'] || 1;
+            const limit = req.query['limit'] || 10;
+            const searchKeyword = req.query['search'];
+    
+            // Call the service function with pagination and search parameters
+            const allPosts = await postSvc.getFeedPosts(page, limit, searchKeyword);
+    
             res.json({
-                result:{allPosts},
-                message:"Successfully fetched all posts!",
-                meta:null
-            })
+                result: allPosts?.posts,
+                message: "Successfully fetched all posts!",
+                meta: {
+                    total:allPosts?.totalCount,
+                    currentPage: page,
+                    limit: limit
+                }
+            });
         } catch (error) {
-            next(error)            
+            next(error);
         }
     }
+    
     getUserPosts = async(req,res,next)=>{
         try {
             const userPosts = await postSvc.getUserPosts(req);

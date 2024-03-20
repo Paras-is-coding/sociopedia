@@ -16,6 +16,19 @@ class UserService extends HttpService {
     }
   }
 
+  
+  getAllUsers = async (searchQuery) => {
+    try {
+      const endpoint = `user${searchQuery ? `?search=${searchQuery}` : ''}`;
+      const response = await this.getRequest(endpoint, { auth: true });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+
   getUserFollowers = async (userId)=>{
     try {
       let uid=null;

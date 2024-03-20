@@ -32,19 +32,26 @@ class PostService extends HttpService {
     }
   }
 
-  getAllPosts = async ()=>{
+  getAllPosts = async (searchQuery = '', page = 1, limit = 10) => {
     try {
-      const createPostEndPoint = `posts`;
-      const response = await this.getRequest(createPostEndPoint,{auth:true});
-      return response;
+        const queryString = `?search=${searchQuery}&page=${page}&limit=${limit}`;
+        const createPostEndPoint = `posts${queryString}`;
+        const response = await this.getRequest(createPostEndPoint, { auth: true });
+        return response;
     } catch (error) {
-      throw error;      
+        throw error;      
     }
-  }
-  getUserPosts = async ()=>{
+}
+
+  getUserPosts = async (userId=null)=>{
     try {
-      const parsedState = JSON.parse(localStorage.getItem('persist:auth'));
-      const uid = (JSON.parse(parsedState?.user))?._id;
+      let uid=null;
+      if(userId){
+        uid = userId;
+      }else{
+        const parsedState = JSON.parse(localStorage.getItem('persist:auth'));
+        uid = (JSON.parse(parsedState?.user))?._id;
+      }
       
       const createPostEndPoint = `posts/${uid}`;
       const response = await this.getRequest(createPostEndPoint,{auth:true});

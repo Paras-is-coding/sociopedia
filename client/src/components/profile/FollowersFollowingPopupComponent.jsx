@@ -86,7 +86,9 @@ export default function FollowersFollowingPopupComponent({ type, user, closePopu
           {data.slice(0,5).map((item, index) => (
             <li key={index} className="flex items-center justify-between border-b py-2">
               <div className="flex items-center">
-                <img src={item.picturePath} alt="Profile" className="w-10 h-10 rounded-full object-cover mr-4" />
+                <img src={`${import.meta.env.VITE_API_URL}images/user/${
+            item?.picturePath
+          }`} alt="Profile" className="w-10 h-10 rounded-full object-cover mr-4" />
                 <div>
                   <p className="text-lg font-semibold">{`${item.firstname} ${item.lastname}`}</p>
                   <p className="text-sm text-gray-400">{item.occupation}</p>

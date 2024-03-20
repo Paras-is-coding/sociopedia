@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import Robot from '../../assets/robot.gif'
+// import Robot from '../../assets/robot.gif'
+import Chicken from '../../assets/chicken.gif'
 
 export default function Welcome({currentUser}) {
   return (
     <Container>
-        <img src={Robot} alt="Robot" />
+        <img src={Chicken} alt="Robot" />
         <h1>
             Welcome,<span>{currentUser && " "+currentUser.firstname+" "+currentUser.lastname}!</span>
         </h1>

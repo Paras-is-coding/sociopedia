@@ -11,7 +11,7 @@ import authSvc from '../authService';
 
 export default function RegisterPage() {
 const[loading,setLoading] = useState(false);
-const navigate = useNavigate();
+// const navigate = useNavigate();
 
 const registerSchema = yup.object({
   firstname:yup.string().min(2).max(30).required(),
@@ -35,12 +35,14 @@ const registerSubmit = async (data) =>{
       const response = await authSvc.registerProcess(data);
         console.log(response)
         setLoading(false);
+        reset();
         toast.success(response?.data?.message)
-        navigate('/');
+
+        // navigate('/');
   }catch(e){
     setLoading(false);
-    console.log(e);
-    toast.error(e.response?.message)
+    console.log("err",e);
+    toast.error(e?.response?.data?.message[0])
     // e.response.data.message.map((obj)=>{
     //   const keys = Object.keys(obj);
     //   setError(keys[0],obj[keys[0]]);
