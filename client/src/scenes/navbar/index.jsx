@@ -3,9 +3,9 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import sociopedialogo from "../../assets/images/sociopedialogo.png";
 import { Link } from "react-router-dom";
 const navigation = [
-  { name: "SOCIOPEDIA", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "FAQs", href: "#", current: false },
+  { name: "SOCIOPEDIA", href: "register", current: true },
+  { name: "Team", href: "team", current: false },
+  { name: "FAQs", href: "faqs", current: false },
 ];
 
 function classNames(...classes) {
@@ -14,7 +14,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-gray-800 ">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -32,19 +32,26 @@ export default function Navbar() {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <Link
+                      to={'/register'}
+                      >
                 <div className=" hidden sm:flex flex-shrink-0 items-center ">
+                
                   <img
                     className="h-8 w-auto rounded-lg"
                     src={sociopedialogo}
                     alt="SOCIOPEDIA"
                   />
+                      
+
                 </div>
+                </Link>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current
                             ? "bg-gray-900 text-white"
@@ -54,7 +61,7 @@ export default function Navbar() {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -64,7 +71,7 @@ export default function Navbar() {
 
                 <div className="right-buttons flex gap-3 sm:static sm:inset-auto ">
                   <div className="relative inline-flex  group">
-                    <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
+                    <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-gray-400 via-orange-200 to-white rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
                     <Link
                       to={'/login'}
                       title="Get quote now"
@@ -75,7 +82,7 @@ export default function Navbar() {
                     </Link>
                   </div>
                   <div className="relative inline-flex  group">
-                    <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
+                    <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-gray-400 via-orange-200 to-white rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
                     <Link
                       to={'/register'}
                       title="Get quote now"

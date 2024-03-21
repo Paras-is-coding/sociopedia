@@ -16,6 +16,8 @@ import NotificationsPage from '../scenes/notificationsPage';
 import ProfilePage from '../scenes/profilePage';
 import SettingsPage from '../scenes/settingsPage';
 import LogoutPage from '../scenes/logoutPage';
+import FAQ from '../scenes/faqs';
+import Team from '../scenes/team';
 
 export default function Routing() {
   return (
@@ -31,6 +33,8 @@ export default function Routing() {
             <Route path='/activate/:token' element={<SetPasswordPage/>}></Route>
             <Route path='/forget-password' element={<ForgetPasswordPage/>}></Route>
             <Route path='/login' element={<LoginPage/>}></Route>
+            <Route path='/faqs' element={<FAQ/>}></Route>
+            <Route path='/team' element={<Team/>}></Route>
 
             <Route path='*' element={<Error404/>}/>
         </Route>

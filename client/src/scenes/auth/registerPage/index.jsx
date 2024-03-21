@@ -55,14 +55,14 @@ const registerSubmit = async (data) =>{
 
     <>
      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8  ">
-        <div className='w-fit shadow-lg h-auto px-10 py-2 sm:px-20  mx-auto rounded-tl-3xl rounded-br-3xl  bg-gradient-to-br from-gray-800 via-purple-200 to-pink-100 '>
+        <div className='w-fit shadow-lg h-auto px-10 py-2 sm:px-20  mx-auto rounded-tl-3xl rounded-br-3xl  bg-gradient-to-br from-gray-400  to-white '>
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           {/* <img
             className="mx-auto h-10 w-auto rounded-xl"
             src={sociopedialogo}
             alt="Your Company"
           /> */}
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-800">
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-customDark">
             Create your account
           </h2>
         </div>
