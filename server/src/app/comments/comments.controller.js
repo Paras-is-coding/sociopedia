@@ -68,6 +68,37 @@ class CommentsController {
       next(error);
     }
   }
+
+
+  async editComment(req, res, next) {
+    try {
+      const { commentId } = req.params;
+      const { text } = req.body;
+
+      // Find the comment by ID
+      const comment = await CommentsModel.findById(commentId);
+
+      if (!comment) {
+        return res.status(404).json({
+          message: "Comment not found",
+        });
+      }
+
+      // Update the comment text
+      comment.text = text;
+
+      // Save the updated comment
+      await comment.save();
+
+      res.json({
+        result: comment,
+        message: "Comment updated successfully",
+        meta: null,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 const commentsCtrl = new CommentsController();

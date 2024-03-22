@@ -139,9 +139,9 @@ class PostService extends HttpService {
       throw error;      
     }
   }
-  deleteComment = async (postId)=>{
+  deleteComment = async (commentId)=>{
     try {
-      const deleteCommentEndPoint = `comments/uncomment/${postId}`;
+      const deleteCommentEndPoint = `comments/uncomment/${commentId}`;
       const response = await this.deleteRequest(deleteCommentEndPoint,{auth:true});
       return response;
     } catch (error) {
@@ -155,6 +155,17 @@ class PostService extends HttpService {
       return response;
     } catch (error) {
       throw error;      
+    }
+  }
+
+
+  editComment = async (commentId, commentData) => {
+    try {
+      const editCommentEndPoint = `comments/comment/${commentId}`;
+      const response = await this.patchRequest(editCommentEndPoint, commentData, { auth: true });
+      return response;
+    } catch (error) {
+      throw error;
     }
   }
 

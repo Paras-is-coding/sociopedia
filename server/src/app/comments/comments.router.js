@@ -10,4 +10,7 @@ commentsRouter.post('/comment',checkLogin,ValidateRequest(commentSchema), commen
 commentsRouter.delete('/uncomment/:commentId',checkLogin, commentsController.removeComment);
 commentsRouter.get('/post/:postId', commentsController.getCommentsForPost);
 
+
+commentsRouter.patch('/comment/:commentId', checkLogin, ValidateRequest(commentSchema), commentsController.editComment);
+
 module.exports = commentsRouter;

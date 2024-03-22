@@ -83,7 +83,7 @@ export default function FollowersFollowingPopupComponent({ type, user, closePopu
         <div className="w-full h-[1px] bg-gray-400" ></div>
         <SearchBar/>
         <ul className="max-h-72 overflow-y-auto">
-          {data.slice(0,5).map((item, index) => (
+          {data?.slice(0,5).map((item, index) => (
             <li key={index} className="flex items-center justify-between border-b py-2">
               <div className="flex items-center">
                 <img src={`${import.meta.env.VITE_API_URL}images/user/${

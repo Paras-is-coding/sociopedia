@@ -1,19 +1,12 @@
 import React from "react";
 import TeamCard from "../../components/teamcard";
 import paras from "../../assets/images/team/paras.jpeg";
-import bimla from "../../assets/images/team/bimla.jpeg";
-import pusp from "../../assets/images/team/pusp.png";
-import ramila from "../../assets/images/team/ramila.png";
-import rukmani from "../../assets/images/team/rukmani.png";
+
 
 const Team = () => {
   
   const teamMembers = [
     { name: "Paras Chand", profession: "Web Developer", imageSrc: paras },
-    { name: "Bimla Bhatt", profession: "UI/UX Designer", imageSrc: bimla },
-    { name: "Rukmani Uranw", profession: "UI/UX Designer", imageSrc: rukmani },
-    { name: "Ramila Bist", profession: "Report maker", imageSrc: ramila },
-    { name: "Pusp Joshi", profession: "Brand Ambassador", imageSrc: pusp }
   ];
 
   return (

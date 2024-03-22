@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import postSvc from "../../../scenes/homePage/homeService";
 import CommentComponent from "../../comment";
 import CommentForm from "../../commentForm";
 import { toast } from "react-toastify";
 import "../../../assets/css/customScrollbar.css";
 import EditPostPopup from "../editPost/EditPostPopup";
+import userSvc from "../../../scenes/profilePage/userService";
 
 export default function PostCard({ postDetails, userDetails }) {
   const [postTime, setPostTime] = useState("");
@@ -23,15 +24,23 @@ export default function PostCard({ postDetails, userDetails }) {
   const handleLikeClicked = async () => {
     try {
       if (!isLiked) {
+        // If not liked, add like
         await postSvc.addLike({
           postId: postDetails?._id,
           userId: userDetails?._id,
         });
+        // Update the state to reflect the like action
+        setIsLiked(true);
+        // Update the likes count in the state
+        setLikes([...likes, userDetails?._id]);
       } else {
+        // If already liked, remove like
         await postSvc.unlike(postDetails?._id, userDetails?._id);
+        // Update the state to reflect the unlike action
+        setIsLiked(false);
+        // Update the likes count in the state
+        setLikes(likes.filter((like) => like !== userDetails?._id));
       }
-      // Refresh the page after liking or unliking
-      window.location.reload();
     } catch (error) {
       toast.error("Error liking post ", error);
     }
@@ -102,7 +111,7 @@ export default function PostCard({ postDetails, userDetails }) {
 
   const handleDeletePost = async () => {
     try {
-      await postSvc.deletePost(postDetails?._id); 
+      await postSvc.deletePost(postDetails?._id);
       toast.info("Post deleted successfully!");
       window.location.reload();
     } catch (error) {
@@ -110,28 +119,40 @@ export default function PostCard({ postDetails, userDetails }) {
     }
   };
 
+  const handleFollowUnfollow = async (userId) => {
+    try {
+      const response = await userSvc.addRemoveFollowing(userId);
+      console.log("Follow/unfollow response: ", response);
+      toast.info(`Follow/Unfollow successfull!`);
+      window.location.reload();
+    } catch (error) {
+      console.log("Error unfollowing user:", error);
+      toast.error(`Error unfollowing user: ${error}`);
+    }
+  };
+
+  // Function to add a new comment to the comments state
+  const addComment = (newComment) => {
+    setComments((prevComments) => [...prevComments, newComment]);
+  };
   return (
     <div className="bg-gray-100 h-auto flex items-center justify-center w-full">
       <div className="bg-white p-8 rounded-lg shadow-md w-4/5 md:w-2/3">
         {/* User Info with Three-Dot Menu */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2 ">
-            <Link
-            to={`${postDetails?.user}`}
-            >
-            <img
-              src={`${import.meta.env.VITE_API_URL}images/user/${
-                postDetails?.userPicturePath
-              }`}
-              alt="User Avatar"
-              className="w-8 h-8 rounded-full object-cover"
-            />
+            <Link to={`${postDetails?.user}`}>
+              <img
+                src={`${import.meta.env.VITE_API_URL}images/user/${
+                  postDetails?.userPicturePath
+                }`}
+                alt="User Avatar"
+                className="w-8 h-8 rounded-full object-cover"
+              />
             </Link>
             <div>
-            <Link
-            to={`${postDetails?.user}`}
-            >
-              <p className="text-gray-800 font-semibold">{`${postDetails?.firstname} ${postDetails?.lastname}`}</p>
+              <Link to={`${postDetails?.user}`}>
+                <p className="text-gray-800 font-semibold">{`${postDetails?.firstname} ${postDetails?.lastname}`}</p>
               </Link>
               <p className="text-gray-500 text-sm">{postTime}</p>
             </div>
@@ -165,19 +186,24 @@ export default function PostCard({ postDetails, userDetails }) {
                 {postDetails?.user === userDetails?._id ? (
                   <>
                     <button
-                    onClick={handleEditPost}
-                     className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                      onClick={handleEditPost}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
                       Edit
                     </button>
                     <button
-                    onClick={handleDeletePost}
-                     className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                      onClick={handleDeletePost}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
                       Delete
                     </button>
                   </>
                 ) : (
                   <>
-                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                    <button
+                      onClick={() => handleFollowUnfollow(postDetails?.user)}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
                       {userDetails.following.includes(postDetails?.user)
                         ? `Unfollow ${postDetails?.firstname}`
                         : "Follow"}
@@ -205,16 +231,18 @@ export default function PostCard({ postDetails, userDetails }) {
             className="w-auto mx-auto h-[50vh] object-fit rounded-md"
           />
         </div> */}
-          {/* Image */}
-          <div className="mb-4 mx-auto w-[100%] sm:w-4/5 h-[40vh] sm:h-[60vh] flex justify-center items-center">
-  <img
-    src={`${import.meta.env.VITE_API_URL}images/posts/${postDetails?.picturePath}`}
-    alt="Post Image"
-    className="max-w-full min-h-full min-w-[100%] max-h-full object-contain"
-  />
-</div>
+        {/* Image */}
+        <div className="mb-4 mx-auto w-[100%] sm:w-4/5 h-[40vh] sm:h-[60vh] flex justify-center items-center">
+          <img
+            src={`${import.meta.env.VITE_API_URL}images/posts/${
+              postDetails?.picturePath
+            }`}
+            alt="Post Image"
+            className="max-w-full min-h-full min-w-[100%] max-h-full object-contain"
+          />
+        </div>
         {/* Like and Comment Section */}
-        <div className="flex items-center justify-between text-gray-500 "> 
+        <div className="flex items-center justify-between text-gray-500 ">
           <div
             className={`flex items-center space-x-2  `}
             onClick={handleLikeClicked}
@@ -260,7 +288,11 @@ export default function PostCard({ postDetails, userDetails }) {
         </div>
         <hr className="mt-2 mb-2" />
         {commentMode ? (
-          <CommentForm userId={userDetails?._id} postId={postDetails?._id} />
+          <CommentForm
+            userId={userDetails?._id}
+            postId={postDetails?._id}
+            addComment={addComment}
+          />
         ) : (
           <p
             className="text-gray-800 font-semibold"
@@ -273,19 +305,24 @@ export default function PostCard({ postDetails, userDetails }) {
         <div className="mt-4 h-40 overflow-auto custom-scrollbar">
           {comments &&
             comments.map((comment) => (
-              <CommentComponent key={comment?.createdAt} comment={comment} />
+              <CommentComponent
+                key={comment?.createdAt}
+                comment={comment}
+                postDetails={postDetails}
+                userDetails={userDetails}
+                setComments={setComments}
+              />
             ))}
         </div>
 
-             {/* Edit Post Popup */}
+        {/* Edit Post Popup */}
         {editPostPopupOpen && (
-          <EditPostPopup 
+          <EditPostPopup
             user={userDetails}
             postDetails={postDetails}
             closeEditPostPopup={() => setEditPostPopupOpen(false)}
           />
         )}
-
       </div>
     </div>
   );
