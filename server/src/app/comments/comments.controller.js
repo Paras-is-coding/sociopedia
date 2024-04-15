@@ -1,4 +1,6 @@
 
+const notificationsCtrl = require("../notification/notification.controller");
+const PostModel = require("../post/post.model");
 const userSvc = require("../user/user.services");
 const CommentsModel = require("./comments.model");
 
@@ -21,6 +23,17 @@ class CommentsController {
       });
      
       await newComment.save();
+
+
+      // Notify the creator of the post about the new comment
+      const post = await PostModel.findById(postId);
+      await notificationsCtrl.createNotification(
+        post.user, 
+        userId, 
+        'comment',
+        postId
+      );
+
 
       res.json({
         result:newComment,

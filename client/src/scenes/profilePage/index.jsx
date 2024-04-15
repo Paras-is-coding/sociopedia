@@ -9,7 +9,7 @@ import postSvc from "../homePage/homeService";
 export default function ProfilePage() {
   const [user, setUser] = useState({});
   const [localUser, setLocalUser] = useState({});
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false); // State to control the popup visibility
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false); 
   const [isFollowersPopupOpen, setFollowersPopupOpen] = useState(false);
   const [isFollowingPopupOpen, setFollowingPopupOpen] = useState(false);
   const { userId } = useParams();
@@ -231,6 +231,7 @@ export default function ProfilePage() {
   {/* Render user posts */}
   {userPosts.map((post) => (
     <div key={post?._id} className=" aspect-w-1 aspect-h-1">
+      <Link to={`/home/post/${post?._id}`}>
       <div className="w-full h-full">
         <img
           className="w-full h-full object-cover rounded-lg border border-gray-200"
@@ -238,6 +239,8 @@ export default function ProfilePage() {
           alt="Post"
         />
       </div>
+      </Link>
+     
     </div>
   ))}
 </div>

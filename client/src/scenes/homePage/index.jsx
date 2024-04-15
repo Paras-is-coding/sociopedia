@@ -21,6 +21,10 @@ export default function HomePage() {
   const [selectedOption, setSelectedOption] = useState("posts");
   const [showSearchedUserPopup, setShowSearchedUserPopup] = useState(false);
 
+
+
+  
+
   useEffect(() => {
     const fetchData = async () => {
       try {

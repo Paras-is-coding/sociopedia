@@ -24,6 +24,21 @@ class PostServices {
     return { newPost, allPosts };
   };
 
+  getPostById = async (postId) => {
+    try {
+        const post = await PostModel.findById(postId);
+
+        if (!post) {
+            throw new Error("Post not found");
+        }
+
+        return post;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
   getFeedPosts = async (page = 1, limit = 10, searchKeyword = "") => {
     try {
       // Apply pagination

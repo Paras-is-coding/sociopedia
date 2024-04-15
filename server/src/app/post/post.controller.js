@@ -1,3 +1,4 @@
+const notificationsCtrl = require("../notification/notification.controller");
 const PostRequest = require("./post.request");
 const postSvc = require("./post.services")
 
@@ -10,6 +11,15 @@ class PostController{
             // returns newPost and allPosts
             const newPostres = await postSvc.createNewPost(payload);
 
+        // Notify users about the new post
+        const authorId = req.authUser._id; // 
+        await notificationsCtrl.createNotification(
+            authorId, 
+            authorId,
+            'post',
+            newPostres._id
+        );
+
             res.json({
                 result:newPostres,
                 message:"Post created successfully!",
@@ -20,6 +30,9 @@ class PostController{
             next(error)            
         }
     }
+
+
+
     updatePost = async (req, res, next) => {
         try {
             const postId = req.params.postId; 
@@ -53,11 +66,29 @@ class PostController{
         }
     };
 
+
+    getPostById = async (req, res, next) => {
+        try {
+            const postId = req.params.postId;
+    
+            const post = await postSvc.getPostById(postId);
+    
+            res.json({
+                result: post,
+                message: "Successfully fetched the post!",
+                meta: null
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    
     getFeedPosts = async(req, res, next) => {
         try {
             const page = req.query['page'] || 1;
             const limit = req.query['limit'] || 10;
-            const searchKeyword = req.query['search'];
+            const searchKeyword = req.query['search'] || "";
     
             // Call the service function with pagination and search parameters
             const allPosts = await postSvc.getFeedPosts(page, limit, searchKeyword);

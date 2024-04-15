@@ -1,3 +1,4 @@
+const notificationsCtrl = require("../notification/notification.controller");
 const userSvc = require("./user.services");
 const { ObjectId } = require('mongodb');
 
@@ -156,12 +157,20 @@ class UserController{
                 // Remove the id from the following user's followers list
                 const idObject = new ObjectId(id);
                 updatedFollowingsFollowers = followingUser.followers.filter((followerId) => !followerId.equals(idObject));
+
+                // Remove follow notification when unfolowed
+                await notificationsCtrl.deleteNotificationUnfollow(followingId, id, 'follow');
+
+
             } else {
-                console.log("Follow samman pugew")
+                // console.log("Follow samman pugew")
                 // Add the followingId to the user's following list
                 updatedFollowing = [...userDetails.following, followingId];
                 // Add the id to the following user's followers list
                 updatedFollowingsFollowers = [...followingUser.followers, id];
+
+                 // Create follow notification
+                 await notificationsCtrl.createNotification(followingId, id, 'follow');
             }
     
             // Update the user's following list

@@ -33,7 +33,6 @@ export default function ChatContainer({currentChat,currentUser,socket}) {
             message:msg,
         });
 
-
         // emit "send-msg" event
         socket.current.emit("send-msg",{
             to:currentChat._id,

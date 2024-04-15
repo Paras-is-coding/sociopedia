@@ -32,6 +32,17 @@ class PostService extends HttpService {
     }
   }
 
+  getPostById = async (postId) => {
+    try {
+        const getPostEndPoint = `posts/post/${postId}`;
+        const response = await this.getRequest(getPostEndPoint, { auth: true });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
   getAllPosts = async (searchQuery = '', page = 1, limit = 10) => {
     try {
         const queryString = `?search=${searchQuery}&page=${page}&limit=${limit}`;

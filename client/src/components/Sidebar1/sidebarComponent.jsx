@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { setLogout } from "../../redux/features/authSlice";
 import sociopedialogo from "../../assets/images/sociopedialogo.png";
 import CreatePostPopup from "../post/createPost/CreatePostPopup";
+import Swal from "sweetalert2";
 
 
 
@@ -33,7 +34,7 @@ const SidebarComponent = () => {
 
 
   const handleLogoutClick = async () => {
-    await dispatch(setLogout());
+    dispatch(setLogout());
     navigate("/login");
   };
 
@@ -154,7 +155,22 @@ const SidebarComponent = () => {
             <Link
               to={"#"}
               className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"
-              onClick={handleLogoutClick}
+              onClick={(e) => {
+                e.preventDefault()
+                Swal.fire({
+                  title: "Are you sure?",
+                  text: "You'll be logged out of the device!",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, Logout!"
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    handleLogoutClick();
+                  }
+                })
+              }}
             >
               <span className="inline-flex items-center justify-center h-12 w-12 md:text-lg text-4xl text-gray-400">
                 <BiLogOut />

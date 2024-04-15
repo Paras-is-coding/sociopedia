@@ -17,7 +17,7 @@ server.listen(process.env.PORT,process.env.HOST,(err)=>{
         console.log("Error connecting to the server!");
     }
 })
-
+  
 
 
 
@@ -47,5 +47,19 @@ io.on("connection",(socket)=>{
         }
     })
 
+    socket.on("send-notification", (data) => {
+        const recipientSocket = onlineUsers.get(data.recipientId);
+        if (recipientSocket) {
+            io.to(recipientSocket).emit("new-notification", data.notification);
+        }
+    });
+
+    socket.on("notification-received", (notificationId) => {
+        // Logic for handling notification acknowledgment
+    });
+
 
 });
+
+
+module.exports = io;

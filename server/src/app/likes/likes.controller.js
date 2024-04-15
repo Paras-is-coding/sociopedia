@@ -1,4 +1,6 @@
 
+const notificationsCtrl = require("../notification/notification.controller");
+const PostModel = require("../post/post.model");
 const LikesModel = require("./likes.model");
 
 class LikesController {
@@ -9,6 +11,15 @@ class LikesController {
       // Create and save a new like
       const newLike = new LikesModel({ postId, userId });
       await newLike.save();
+
+       // Notify the author of the post about the like
+       const post = await PostModel.findById(postId);
+       await notificationsCtrl.createNotification(
+         post.user, 
+         userId, 
+         'like', 
+         postId 
+       );
 
       res.json({
         result:newLike,

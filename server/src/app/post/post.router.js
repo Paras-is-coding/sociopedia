@@ -19,7 +19,9 @@ postRouter.post("/",checkLogin,dirSetup,uploader.single("picturePath"),ValidateR
 
 // read
 postRouter.get("/",checkLogin,postCtrl.getFeedPosts)
+postRouter.get("/post/:postId", checkLogin, postCtrl.getPostById);
 postRouter.get("/:userId",checkLogin,postCtrl.getUserPosts)
+
 
 //  update
 postRouter.patch("/:postId", checkLogin, dirSetup, uploader.single("picturePath"), ValidateRequest(postSchema), postCtrl.updatePost)

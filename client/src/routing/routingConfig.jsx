@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { ToastContainer } from 'react-toastify'
@@ -18,8 +18,36 @@ import SettingsPage from '../scenes/settingsPage';
 import LogoutPage from '../scenes/logoutPage';
 import FAQ from '../scenes/faqs';
 import Team from '../scenes/team';
+import PostPage from '../scenes/postPage';
+
+
+import { io } from 'socket.io-client';
+import { useDispatch } from 'react-redux';
+import { addNotification } from '../redux/features/notificationSlice';
+
+// Initialize WebSocket connection for notifications
+console.log(".........",import.meta.env.WEBSOCKET_URL)
+const socket = io(import.meta.env.WEBSOCKET_URL || 'http://localhost:3000/');
+
 
 export default function Routing() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("here")
+    // Listen for new notifications
+    socket.on('connect',()=>{console.log("socket connected!")})
+    socket.on('new-notification', (notification) => {
+      // Dispatch action to update Redux store with new notification
+      dispatch(addNotification(notification));
+    });
+
+    // Clean up socket connection when component unmounts
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   return (
     <>
     <ToastContainer/>
@@ -48,6 +76,7 @@ export default function Routing() {
                 <Route path='notifications' element={<NotificationsPage/>}/>
                 <Route path=':userId' element={<ProfilePage/>}/>
                 <Route path='settings' element={<SettingsPage/>}/>
+                <Route path='post/:postId' element={<PostPage/>}/>
                 <Route path='logout' element={<LogoutPage/>}/>
 
             </Route>
