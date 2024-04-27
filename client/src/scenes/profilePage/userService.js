@@ -87,6 +87,17 @@ class UserService extends HttpService {
 
 
 
+  deleteUser = async (userId) => {
+    try {
+      const endpoint = `user/${userId}`;
+      const response = await this.deleteRequest(endpoint, { auth: true });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
   
 }
 

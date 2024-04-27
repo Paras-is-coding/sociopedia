@@ -1,3 +1,8 @@
+const PATModel = require("../auth/personal-access-token");
+const CommentModel = require("../comments/comments.model");
+const LikesModel = require("../likes/likes.model");
+const NotificationModel = require("../notification/notification.model");
+const PostModel = require("../post/post.model");
 const UserModel = require("./user.model");
 
 class UserServices{
@@ -42,6 +47,28 @@ class UserServices{
           const users = await UserModel.find(filter);
       
           return users;
+        } catch (error) {
+          throw error;
+        }
+      };
+
+
+
+      deleteUserById = async (id) => {
+        try {
+          const deletedUser = await UserModel.findByIdAndDelete(id);
+
+
+          // associated data of user 
+          await PostModel.deleteMany({ user: id });
+          await PATModel.deleteMany({ userId: id });
+          await NotificationModel.deleteMany({ recipient: id });
+          await LikesModel.deleteMany({ userId: id });
+          await CommentModel.deleteMany({ userId: id });
+
+
+
+          return deletedUser;
         } catch (error) {
           throw error;
         }

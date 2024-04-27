@@ -30,14 +30,14 @@ export default function LoginPage() {
       setLoading(true);
       // API Call
       const response = await authSvc.loginProcess(data, dispatch);
-      console.log(response);
+      // console.log(response);
       setLoading(false);
 
       toast.success(`Successfully logged in!`);
       navigate("/home");
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      // console.log(e);
       toast.error(e.response?.data?.message);
       // e.response.data.message.map((obj)=>{
       //   const keys = Object.keys(obj);
@@ -64,7 +64,7 @@ export default function LoginPage() {
           }
         }
       } catch (error) {
-        console.log("ERROR K aayo" + error);
+        // console.log("ERROR K aayo" + error);
         toast.error(error);
         dispatch(setLogout());
       }

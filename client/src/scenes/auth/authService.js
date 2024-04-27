@@ -43,6 +43,7 @@ class AuthService extends HttpService {
       const loginEndpoint = 'auth/login';
       const response = await this.postRequest(loginEndpoint,userData);
       console.log('response is '+JSON.stringify(response))
+      console.log(typeof(response))
    
       console.log(response.data.token+"and "+ response.data.refreshToken)
       // localStorage.setItem('_au',response.data.token)
@@ -56,8 +57,8 @@ class AuthService extends HttpService {
 
         // Dispatch authUser
         const user = await this.getLoggedInUser();
-        console.log("user is "+user)
-        dispatch(setUser(user?.authUser));
+        // console.log("user is "+user)
+        dispatch(setUser(user?.data?.authUser));
 
 
       

@@ -18,6 +18,7 @@ userRouter.get("/:id", checkLogin, userCtrl.getUser);
 userRouter.get("/",checkLogin,userCtrl.getAllUsers)
 userRouter.get("/:id/followers", checkLogin, userCtrl.getUserFollowers);
 userRouter.get("/:id/following", checkLogin, userCtrl.getUserFollowing);
+userRouter.delete("/:id", checkLogin, userCtrl.deleteUser);
 
 // update
 userRouter.patch(

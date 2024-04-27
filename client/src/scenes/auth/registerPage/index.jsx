@@ -21,7 +21,7 @@ const registerSchema = yup.object({
 
 
 // react-hook-form implementation
-const {register, handleSubmit,setValue,setError, formState:{errors}} = useForm({
+const {register, handleSubmit,setValue,setError,reset, formState:{errors}} = useForm({
   resolver:yupResolver(registerSchema)
 });
 
@@ -33,7 +33,6 @@ const registerSubmit = async (data) =>{
 
       // API Call
       const response = await authSvc.registerProcess(data);
-        console.log(response)
         setLoading(false);
         reset();
         toast.success(response?.data?.message)
@@ -88,7 +87,7 @@ const registerSubmit = async (data) =>{
               </div>
             </div>
             <span className="text-danger">
-                    <em>{errors?.email?.message}</em>
+                    <em>{errors?.firstname?.message}</em>
                   </span>
           <div>
               <div className="flex items-center justify-between">
@@ -99,15 +98,15 @@ const registerSubmit = async (data) =>{
               <div className="mt-2">
                 <input
             {...register("lastname",{required:true,disabled:loading})}
-                  id="lasttname"
-                  name="lasttname"
+                  id="lastname"
+                  name="lastname"
                   type="text"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                 />
               </div>
               <span className="text-danger">
-                    <em>{errors?.email?.message}</em>
+                    <em>{errors?.lastname?.message}</em>
                   </span>
             </div>
 

@@ -200,6 +200,30 @@ class UserController{
             next(error);
         }
     };
+
+
+
+
+    deleteUser = async (req, res, next) => {
+        try {
+          const { id } = req.params;
+          const deletedUser = await userSvc.deleteUserById(id);
+          if (deletedUser) {
+            res.status(200).json({
+              success: true,
+              message: "User deleted successfully",
+              data: deletedUser
+            });
+          } else {
+            res.status(404).json({
+              success: false,
+              message: "User not found or could not be deleted"
+            });
+          }
+        } catch (error) {
+          next(error);
+        }
+      };
     
 
 

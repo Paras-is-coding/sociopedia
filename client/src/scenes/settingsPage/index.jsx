@@ -40,6 +40,15 @@ function SettingsPage() {
       toast.error("Error logging out!", error);
     }
   };
+  const handleDeleteUser = async() => {
+    try {
+      const response = await userSvc.deleteUser(user._id);
+      toast.success(response.data.message);
+      navigate('/login');
+    } catch (error) {
+      toast.error("Error deleting account!", error);
+    }
+  };
 
   const openEditProfilePopup = () => {
     setEditProfilePopupOpen(true);
@@ -56,7 +65,7 @@ function SettingsPage() {
     setLocalUser(userObject);
   }, []);
   useEffect(()=>{
-    console.log("lu",localUser)
+    // console.log("lu",localUser)
     setUserId(localUser._id);
   }),[localUser]
 
@@ -129,7 +138,7 @@ function SettingsPage() {
               confirmButtonText: "Yes, delete my account!"
             }).then((result) => {
               if (result.isConfirmed) {
-                // handleLogout();
+                handleDeleteUser();
                 console.log("Delete user!")
               }
             })

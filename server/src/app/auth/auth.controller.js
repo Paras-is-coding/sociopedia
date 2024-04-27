@@ -21,7 +21,7 @@ class AuthController {
 
       res.json({
         result: savedUser,
-        messsage: "User registered successfully! Check email to activate!",
+        message: "User registered successfully! Check email to activate!",
         meta: null,
       });
     } catch (error) {

@@ -29,7 +29,7 @@ export default function HomePage() {
     const fetchData = async () => {
       try {
         const user = JSON.parse(localStorage.getItem("persist:auth"))?.user;
-        const userObject = JSON.parse(user);
+        const userObject =user ??  JSON.parse(user);
         setUser(userObject);
 
         let response;
