@@ -25,9 +25,12 @@ const SidebarComponent = () => {
 
 
   useEffect(() => {
-    const localuser = JSON.parse(localStorage.getItem("persist:auth"))?.user;
-    const userObject =  JSON.parse(localuser);
-    setUser(userObject);
+    const userString = localStorage.getItem("persist:auth");
+    if (userString) {
+      const { user } = JSON.parse(userString); 
+      console.log("userrrr",userString)
+      setUser(JSON.parse(user)); 
+    }
     console.log(user)
   }, []);
 
@@ -133,9 +136,9 @@ const SidebarComponent = () => {
               <span className="text-lg font-medium hidden md:block">
                 Notifications
               </span>
-              <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500 hidden md:block">
+              {/* <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500 hidden md:block">
                 5
-              </span>
+              </span> */}
             </Link>
           </li>
           <li>

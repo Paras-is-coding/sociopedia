@@ -24,7 +24,8 @@ export default function ChatPage() {
         const localuser = JSON.parse(localStorage.getItem('persist:auth'))?.user;
         const userObject = JSON.parse(localuser);
         setCurrentUser(userObject);
-        console.log("CUser__",currentUser)
+        console.log(localuser)
+        console.log("CUser__",userObject)
       }
     };
     userCheck();
@@ -33,10 +34,20 @@ export default function ChatPage() {
   // Establish socket connection and emit "add-user" event
   useEffect(() => {
     if (currentUser) {
-      const host = import.meta.env.WEBSOCKET_URL;
+      const host = import.meta.env.WEBSOCKET_URL || `http://localhost:3000/`;
+      console.log(host)
       socket.current = io(host);
+
+          // Listen for socket connection event
+    socket.current.on('connect', () => {
+      console.log('Socket is connected!');
+    });
+
       socket.current.emit('add-user', currentUser._id);
+
     }
+   
+  
   }, [currentUser]);
 
   // Fetch contacts for the current user

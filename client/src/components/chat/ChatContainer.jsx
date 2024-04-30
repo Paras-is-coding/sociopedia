@@ -37,9 +37,10 @@ export default function ChatContainer({currentChat,currentUser,socket}) {
         socket.current.emit("send-msg",{
             to:currentChat._id,
             from:currentUser._id,
-            messsage:msg
+            message:msg
         });
         // update current messages array by pushing message sent by currentUser
+        console.log("sent message is",msg)
         const msgs = [...messages];
         msgs.push({fromSelf:true,message:msg})
         setMessages(msgs)
@@ -53,6 +54,7 @@ export default function ChatContainer({currentChat,currentUser,socket}) {
     useEffect(()=>{
         if(socket.current){
             socket.current.on("msg-receive",(msg)=>{
+                console.log("arrived message is",msg);
                 setarrivalMessage({fromSelf:false,message:msg});
             })
         }

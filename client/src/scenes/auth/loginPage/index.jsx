@@ -37,7 +37,6 @@ export default function LoginPage() {
       navigate("/home");
     } catch (e) {
       setLoading(false);
-      // console.log(e);
       toast.error(e.response?.data?.message);
       // e.response.data.message.map((obj)=>{
       //   const keys = Object.keys(obj);

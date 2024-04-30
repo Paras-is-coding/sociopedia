@@ -151,71 +151,59 @@ function SettingsPage() {
         </div>
       )}
 
-      {/* Notification Settings */}
-      <section className="mb-8">
+      {/* <section className="mb-8">
         <h2 className="flex items-center text-xl font-semibold mb-4 cursor-pointer text-gray-600 hover:text-gray-400">
           <RiNotificationLine className="mr-2" />
           Notification Settings
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Add notification settings here */}
         </div>
       </section>
 
-      {/* Privacy Settings */}
       <section className="mb-8">
         <h2 className="flex items-center text-xl font-semibold mb-4 cursor-pointer text-gray-600 hover:text-gray-400">
           <MdOutlinePrivacyTip className="mr-2" />
           Privacy Settings
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Add privacy settings here */}
         </div>
       </section>
 
-      {/* Security Settings */}
       <section className="mb-8">
         <h2 className="flex items-center text-xl font-semibold mb-4 cursor-pointer text-gray-600 hover:text-gray-400">
           <MdOutlineSecurity className="mr-2" />
           Security Settings
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Add security settings here */}
         </div>
       </section>
 
-      {/* Accessibility */}
       <section className="mb-8">
         <h2 className="flex items-center text-xl font-semibold mb-4 cursor-pointer text-gray-600 hover:text-gray-400">
           <IoAccessibilityOutline className="mr-2" />
           Accessibility
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Add accessibility settings here */}
         </div>
       </section>
 
-      {/* Language & Region */}
       <section className="mb-8">
         <h2 className="flex items-center text-xl font-semibold mb-4 cursor-pointer text-gray-600 hover:text-gray-400">
           <RiGlobalLine className="mr-2" />
           Language & Region
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Add language & region settings here */}
         </div>
       </section>
 
-      {/* Help & Support */}
       <section className="mb-8">
         <h2 className="flex items-center text-xl font-semibold mb-4 cursor-pointer text-gray-600 hover:text-gray-400">
           <RiQuestionLine className="mr-2" />
           Help & Support
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Add help & support options here */}
         </div>
-      </section>
+      </section> */}
 
       {/* Logins */}
       <section className="mb-8">

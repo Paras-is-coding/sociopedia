@@ -22,15 +22,18 @@ const HorizontalNavBar = () => {
   const [user, setUser] = useState("Username");
 
   useEffect(() => {
-    const localuser = JSON.parse(localStorage.getItem("persist:auth"))?.user;
-    const userObject =  JSON.parse(localuser);
-    setUser(userObject);
+
+    const userString = localStorage.getItem("persist:auth");
+    if (userString) {
+      const { user } = JSON.parse(userString); 
+      setUser(JSON.parse(user)); 
+    }
     console.log(user)
   }, []);
 
 
   const handleLogoutClick = async () => {
-    await dispatch(setLogout());
+     dispatch(setLogout());
     navigate("/login");
   };
 

@@ -43,7 +43,7 @@ class PostService extends HttpService {
 }
 
 
-  getAllPosts = async (searchQuery = '', page = 1, limit = 10) => {
+  getAllPosts = async (searchQuery = '', page = 1, limit = 3) => {
     try {
         const queryString = `?search=${searchQuery}&page=${page}&limit=${limit}`;
         const createPostEndPoint = `posts${queryString}`;

@@ -5,7 +5,7 @@ class AuthService extends HttpService {
   registerProcess = async (userData) => {
     try {
       // Define your API endpoint for user registration
-      const registerEndpoint = 'auth/register';
+      const registerEndpoint = "auth/register";
 
       // Use postRequest from HttpService to make the registration request
       const response = await this.postRequest(registerEndpoint, userData);
@@ -17,72 +17,60 @@ class AuthService extends HttpService {
     }
   };
 
-
-  getActivationTokenVerify = async (token)=>{
+  getActivationTokenVerify = async (token) => {
     try {
-        const verifyEndpoint = 'auth/verify-token/';
-        const response = await this.getRequest(verifyEndpoint+token);
-        return response;
-    } catch (error) {
-        throw error;        
-    }
-  }
-
-  activateUser = async(token,data)=>{
-    try {
-      const activateEndPoint = 'auth/set-password/';
-      const  response = await this.postRequest(activateEndPoint+token,data);
+      const verifyEndpoint = "auth/verify-token/";
+      const response = await this.getRequest(verifyEndpoint + token);
       return response;
     } catch (error) {
-      throw error;      
+      throw error;
     }
-  }
+  };
 
-  loginProcess = async(userData,dispatch)=>{
+  activateUser = async (token, data) => {
     try {
-      const loginEndpoint = 'auth/login';
-      const response = await this.postRequest(loginEndpoint,userData);
-      console.log('response is '+JSON.stringify(response))
-      console.log(typeof(response))
-   
-      console.log(response.data.token+"and "+ response.data.refreshToken)
-      // localStorage.setItem('_au',response.data.token)
-      // localStorage.setItem('_rt',response.data.refreshToken)
+      const activateEndPoint = "auth/set-password/";
+      const response = await this.postRequest(activateEndPoint + token, data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 
-        // Dispatch action to store login data in Redux
-        dispatch(setLogin({
-          token: response?.data?.token,
-          refreshToken: response?.data?.refreshToken,
-        }));
-
-        // Dispatch authUser
-        const user = await this.getLoggedInUser();
-        // console.log("user is "+user)
-        dispatch(setUser(user?.data?.authUser));
-
-
+  loginProcess = async (userData, dispatch) => {
+    try {
+      const loginEndpoint = "auth/login";
+      const response = await this.postRequest(loginEndpoint, userData);
       
+      const { token, refreshToken } = response.data;
+
+      // Dispatch action to store login data in Redux
+      dispatch(setLogin({ token, refreshToken }));
+
+     
+
+    // Dispatch action to get user details and set them in the Redux store
+    const userResponse = await this.getLoggedInUser(token);
+    dispatch(setUser(userResponse.data.authUser));
 
       return response;
-      
     } catch (error) {
-      throw error;      
+      throw error;
     }
-  }
+  };
 
-  getLoggedInUser = async (token)=>{
+  getLoggedInUser = async (token) => {
     try {
-      const userDetailsEndPoint = 'auth/me';
-      const response = await this.getRequest(userDetailsEndPoint,{auth:true,token:token});
+      const userDetailsEndPoint = "auth/me";
+      const response = await this.getRequest(userDetailsEndPoint, {
+        auth: true,
+        token: token,
+      });
       return response;
     } catch (error) {
-      throw error;      
+      throw error;
     }
-  }
-
-
-
-  
+  };
 }
 
 const authSvc = new AuthService();

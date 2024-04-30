@@ -1,12 +1,12 @@
 const http = require('http');
 require('dotenv').config();
 const app = require('./src/config/express.config.js');
+
 // import socket
 const socket = require('socket.io');
 
+
 const server = http.createServer(app);
-
-
 server.listen(process.env.PORT,process.env.HOST,(err)=>{
     if(!err){
         console.log(`Server is running in port ${process.env.PORT} !`);
@@ -31,23 +31,27 @@ const io = socket(server,{
 });
 
 // we'll store all our online users inside this Map 
-global.onlineUsers = new Map();
+let onlineUsers = new Map();
+
 
 io.on("connection",(socket)=>{
+    // console.log("User connected: ",socket.id);
 
-    global.chatSocket = socket;
     socket.on("add-user",(userId)=>{
         onlineUsers.set(userId,socket.id);
+        // console.log("User addded:",userId);
     });
 
     socket.on("send-msg",(data)=>{
+        // console.log(data)
         const sendUserSocket = onlineUsers.get(data.to);
         if(sendUserSocket){
-            socket.to(sendUserSocket).emit("msg-receive",data.msg);
+            socket.to(sendUserSocket).emit("msg-receive",data.message);
         }
     })
 
     socket.on("send-notification", (data) => {
+        console.log("ou at indback",onlineUsers);
         const recipientSocket = onlineUsers.get(data.recipientId);
         if (recipientSocket) {
             io.to(recipientSocket).emit("new-notification", data.notification);
@@ -55,11 +59,14 @@ io.on("connection",(socket)=>{
     });
 
     socket.on("notification-received", (notificationId) => {
+        console.log("Notification recieved : ",notificationId)
         // Logic for handling notification acknowledgment
     });
-
 
 });
 
 
-module.exports = io;
+
+console.log(onlineUsers)
+
+module.exports = {io,onlineUsers};

@@ -1,8 +1,10 @@
-const io = require("../../..");
+const {io,onlineUsers} = require('../../../index');
+
 const UserModel = require("../user/user.model");
 const NotificationModel = require("./notification.model");
 
 class NotificationsController {
+  
   async createNotification(
     recipientId,
     senderId,
@@ -55,7 +57,12 @@ class NotificationsController {
       // io.emit("new-notification", formattedNotification);
 
       // Get the recipient's socket from the Map
-      const recipientSocket = onlineUsers.get(recipientId);
+      console.log("onlineusers at backcontro",onlineUsers)
+      console.log("onlineusers at backcontro",io)
+      const recipientSocket = null;
+      if(onlineUsers){
+       recipientSocket = onlineUsers.get(recipientId);
+      }
 
       // Emit the formatted notification through socket to the recipient user
       if (recipientSocket) {
