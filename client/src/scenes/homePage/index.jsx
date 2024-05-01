@@ -19,35 +19,36 @@ export default function HomePage() {
   const [selectedOption, setSelectedOption] = useState("posts");
   const [showSearchedUserPopup, setShowSearchedUserPopup] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userString = localStorage.getItem("persist:auth");
-        if (userString) {
-          const { user } = JSON.parse(userString); 
-          setUser(JSON.parse(user)); 
-        }
-
-        let response;
-        if (selectedOption === "posts") {
-          response = await postSvc.getAllPosts(searchQuery, currentPage);
-          const allPosts = response?.data?.result;
-          const totalPosts = response?.data?.meta?.total || 1;
-          if (allPosts?.length === 0) {
-            toast.info("No posts found!");
-          }
-          setPosts(allPosts);
-          setTotalPages(Math.ceil(totalPosts / 10));
-
-        } else if (selectedOption === "people") {
-          response = await userSvc.getAllUsers(searchQuery); 
-          setSearchedUsers(response?.data?.result);
-          setShowSearchedUserPopup(true);
-        }
-      } catch (error) {
-        console.log("Error on homepage : " + error);
+  const fetchData = async () => {
+    try {
+      const userString = localStorage.getItem("persist:auth");
+      if (userString) {
+        const { user } = JSON.parse(userString); 
+        setUser(JSON.parse(user)); 
       }
-    };
+
+      let response;
+      if (selectedOption === "posts") {
+        response = await postSvc.getAllPosts(searchQuery, currentPage);
+        const allPosts = response?.data?.result;
+        const totalPosts = response?.data?.meta?.total || 1;
+        if (allPosts?.length === 0) {
+          toast.info("No posts found!");
+        }
+        setPosts(allPosts);
+        setTotalPages(Math.ceil(totalPosts / 10));
+
+      } else if (selectedOption === "people") {
+        response = await userSvc.getAllUsers(searchQuery); 
+        setSearchedUsers(response?.data?.result);
+        setShowSearchedUserPopup(true);
+      }
+    } catch (error) {
+      console.log("Error on homepage : " + error);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, [searchQuery, selectedOption]);
   // }, [searchQuery, currentPage, selectedOption]);
@@ -62,9 +63,9 @@ export default function HomePage() {
   //   setCurrentPage(page);
   // };
 
-  // const closeSearchedUserPopup = () => {
-  //   setShowSearchedUserPopup(false);
-  // };
+  const closeSearchedUserPopup = () => {
+    setShowSearchedUserPopup(false);
+  };
 
   useEffect(() => {
     // Initialize WebSocket connection for notifications

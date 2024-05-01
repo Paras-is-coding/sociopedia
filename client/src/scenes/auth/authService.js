@@ -42,7 +42,7 @@ class AuthService extends HttpService {
       const loginEndpoint = "auth/login";
       const response = await this.postRequest(loginEndpoint, userData);
       
-      const { token, refreshToken } = response.data;
+      const { token, refreshToken } = await response.data;
 
       // Dispatch action to store login data in Redux
       dispatch(setLogin({ token, refreshToken }));
@@ -51,7 +51,7 @@ class AuthService extends HttpService {
 
     // Dispatch action to get user details and set them in the Redux store
     const userResponse = await this.getLoggedInUser(token);
-    dispatch(setUser(userResponse.data.authUser));
+    dispatch(setUser(await userResponse.data.authUser));
 
       return response;
     } catch (error) {

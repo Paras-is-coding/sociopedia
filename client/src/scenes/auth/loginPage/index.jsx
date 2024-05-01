@@ -30,10 +30,9 @@ export default function LoginPage() {
       setLoading(true);
       // API Call
       const response = await authSvc.loginProcess(data, dispatch);
-      // console.log(response);
-      setLoading(false);
-
+     
       toast.success(`Successfully logged in!`);
+
       navigate("/home");
     } catch (e) {
       setLoading(false);
@@ -47,7 +46,7 @@ export default function LoginPage() {
 
   // For next time click on login
   const token = useSelector(
-    (state) => state?.auth?.token !== null && state?.token
+    (state) => state.auth.token !== null && state.auth.token
   );
   console.log("isLoggedIn walo token is " + token);
   useEffect(() => {

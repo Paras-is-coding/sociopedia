@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import userSvc from '../../scenes/profilePage/userService';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function SearchedUserPopup({ searchedUsers, onClose ,currentUser}) {
+  const [followedUsers, setFollowedUsers] = useState([]);
+
+  useEffect(() => {
+    setFollowedUsers(currentUser.following || []);
+}, [currentUser]);
 
     const handleFollowUnfollow = async (userId) => {
         try {
           await userSvc.addRemoveFollowing(userId);
-          // Refresh data after unfollowing
-          fetchData();
+       
+          // fetchData();
+
+        // Update the state based on the current follow status
+        setFollowedUsers(prevFollowedUsers => {
+            if (followedUsers.includes(userId)) {
+                return prevFollowedUsers.filter(id => id !== userId);
+            } else {
+                return [...prevFollowedUsers, userId];
+            }
+        });
+
         } catch (error) {
           console.log("Error unfollowing user:", error);
           toast.error(`Error unfollowing user: ${error}`);
@@ -61,13 +77,19 @@ export default function SearchedUserPopup({ searchedUsers, onClose ,currentUser}
                   <p className="text-sm text-gray-400">{user.occupation}</p>
                   <p className="text-sm text-gray-400">{user.location}</p>
                 </div>
-                {(!currentUser.following?.includes(user._id) && currentUser?._id !== user._id) ?( 
+                {/* {(!currentUser.following?.includes(user._id) && currentUser?._id !== user._id) ?( 
                   <button onClick={() => handleFollowUnfollow(user._id)} className="bg-blue-600 text-white ml-6 px-3 py-1 rounded-full">Follow</button>
                 ):( currentUser?._id !== user._id ?
                     <button onClick={()=> handleFollowUnfollow(user._id)} className="bg-gray-400 text-white ml-6 px-3 py-1 rounded-full">Following</button>:
                     ""
                 )
-                }
+                } */}
+                  {(!followedUsers.includes(user._id) && currentUser?._id !== user._id) ? (
+                                    <button onClick={() => handleFollowUnfollow(user._id)} className="bg-blue-600 text-white ml-6 px-3 py-1 rounded-full">Follow</button>
+                                ) : (currentUser?._id !== user._id ?
+                                    <button onClick={() => handleFollowUnfollow(user._id)} className="bg-gray-400 text-white ml-6 px-3 py-1 rounded-full">Following</button> :
+                                    ""
+                                )}
               </div>
 
               

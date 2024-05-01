@@ -67,6 +67,5 @@ io.on("connection",(socket)=>{
 
 
 
-console.log(onlineUsers)
 
 module.exports = {io,onlineUsers};

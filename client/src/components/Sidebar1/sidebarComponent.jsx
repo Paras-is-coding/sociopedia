@@ -10,7 +10,7 @@ import {
 } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setLogout } from "../../redux/features/authSlice";
+import { setLogout,removeUser } from "../../redux/features/authSlice";
 import sociopedialogo from "../../assets/images/sociopedialogo.png";
 import CreatePostPopup from "../post/createPost/CreatePostPopup";
 import Swal from "sweetalert2";
@@ -38,6 +38,7 @@ const SidebarComponent = () => {
 
   const handleLogoutClick = async () => {
     dispatch(setLogout());
+    dispatch(removeUser());
     navigate("/login");
   };
 
